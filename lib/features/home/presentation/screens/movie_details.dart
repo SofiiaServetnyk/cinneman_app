@@ -91,7 +91,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                     alignment: Alignment.centerLeft,
                     child: SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           MovieDetailRow(
