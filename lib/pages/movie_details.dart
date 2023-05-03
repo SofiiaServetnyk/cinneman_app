@@ -4,20 +4,20 @@ import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
-import 'package:cinneman/features/home/presentation/widgets/CustomCalendar.dart';
+import 'package:cinneman/features/home/presentation/widgets/custom_calendar.dart';
 import 'package:cinneman/features/home/presentation/widgets/movie_detail_row.dart';
 import 'package:flutter/material.dart';
 
-class MovieDetails extends StatefulWidget {
+class MovieDetailsPage extends StatefulWidget {
   List<FakeMovies> fakeMovies = FakeUtils.getFakeMovies();
 
-  MovieDetails({Key? key}) : super(key: key);
+  MovieDetailsPage({Key? key}) : super(key: key);
 
   @override
-  State<MovieDetails> createState() => _MovieDetailsState();
+  State<MovieDetailsPage> createState() => _MovieDetailsPageState();
 }
 
-class _MovieDetailsState extends State<MovieDetails> {
+class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +27,14 @@ class _MovieDetailsState extends State<MovieDetails> {
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(CustomBorderRadius.br),
               ),
               child: Stack(
                 children: [
                   Container(
                     height: 300,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(PngIcons.helperPoster),
                             fit: BoxFit.cover)),
@@ -64,15 +64,15 @@ class _MovieDetailsState extends State<MovieDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text('Some text'),
-                              SizedBox(height: SizedBoxSize.sbs10),
+                              const Text('Some text'),
+                              const SizedBox(height: SizedBoxSize.sbs10),
                               Container(
                                   padding: Paddings.all10,
                                   decoration: BoxDecoration(
                                       color: CustomColors.yellow1,
                                       borderRadius: BorderRadius.circular(
                                           CustomBorderRadius.br)),
-                                  child: Text('Some info'))
+                                  child: const Text('Some info'))
                             ],
                           )
                         ],
@@ -124,9 +124,14 @@ class _MovieDetailsState extends State<MovieDetails> {
                       right: 0,
                       child: CustomButton(
                           onPressed: () => showModalBottomSheet(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(
+                                          CustomBorderRadius.br))),
                               context: context,
                               builder: (context) => CustomCalendar()),
-                          child: Text('Delicious tickets')))
+                          child: const Text('Delicious tickets')))
                 ],
               ),
             ))

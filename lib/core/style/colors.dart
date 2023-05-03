@@ -10,4 +10,5 @@ abstract class CustomColors {
   static Color yellow1 = const Color.fromRGBO(171, 109, 32, 1);
   static Color yellow17 = const Color.fromRGBO(171, 109, 32, 0.75);
   static Color yellow2 = const Color.fromRGBO(136, 74, 23, 1);
+  static Color grey = const Color.fromRGBO(230, 230, 230, 1);
 }

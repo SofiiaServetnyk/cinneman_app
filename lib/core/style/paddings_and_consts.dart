@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class Paddings {
   // all
+  static const EdgeInsets all5 = EdgeInsets.all(5.0);
   static const EdgeInsets all10 = EdgeInsets.all(10.0);
   static const EdgeInsets all15 = EdgeInsets.all(15.0);
   static const EdgeInsets all20 = EdgeInsets.all(20.0);
@@ -33,6 +34,9 @@ abstract class CustomBorderRadius {
 }
 
 abstract class ButtonSize {
+  static const double sessionMinWidth = 75;
+  static const double paymentMaxWidth = 150;
+  static const double sessionMinHeight = 35;
   static const double minWidth = 325;
   static const double minHeight = 50;
 }

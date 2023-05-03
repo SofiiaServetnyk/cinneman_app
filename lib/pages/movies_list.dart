@@ -2,16 +2,17 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/home/presentation/widgets/moview_preview.dart';
+import 'package:cinneman/navigation/app_router_delegate.dart';
+import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 
-class Helper extends StatefulWidget {
-  Helper({Key? key}) : super(key: key);
+class MoviesListPage extends StatefulWidget {
   List<FakeMovies> fakeMovies = FakeUtils.getFakeMovies();
   @override
-  State<Helper> createState() => _HelperState();
+  State<MoviesListPage> createState() => _MoviesListPageState();
 }
 
-class _HelperState extends State<Helper> {
+class _MoviesListPageState extends State<MoviesListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +36,17 @@ class _HelperState extends State<Helper> {
                       child: ListView.builder(
                           itemCount: widget.fakeMovies.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return MoviewPreview(
-                                fakeMovies: widget.fakeMovies[index]);
+                            return GestureDetector(
+                              onTap: () async {
+                                var delegate = Router.of(context).routerDelegate
+                                    as AppRouterDelegate;
+
+                                await delegate.setNewRoutePath(RoutePath(
+                                    route: AppRoutes.movieDetailsPage));
+                              },
+                              child: MoviewPreview(
+                                  fakeMovies: widget.fakeMovies[index]),
+                            );
                           }))
                 ],
               ))),

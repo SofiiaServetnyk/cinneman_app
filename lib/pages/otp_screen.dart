@@ -2,18 +2,15 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OtpScreen extends StatefulWidget {
-  const OtpScreen({Key? key}) : super(key: key);
+class OtpPage extends StatelessWidget {
+  const OtpPage({Key? key}) : super(key: key);
 
-  @override
-  State<OtpScreen> createState() => _OtpScreenState();
-}
-
-class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +25,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         const SizedBox(height: SizedBoxSize.sbs25),
                         Image.asset(
                           PngIcons.otpScreen,
-                          height: IconSize.iconSize,
+                          height: IconSize.bigIconSize,
                         ),
                         const SizedBox(height: SizedBoxSize.sbs25),
                         Text(
@@ -51,7 +48,9 @@ class _OtpScreenState extends State<OtpScreen> {
                         ),
                         const SizedBox(height: SizedBoxSize.sbs100),
                         CustomTextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              BlocProvider.of<AuthCubit>(context).loginUser();
+                            },
                             child: Text('Send', style: nunito.s18.yellow1))
                       ],
                     ),

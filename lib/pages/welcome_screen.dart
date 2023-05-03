@@ -2,18 +2,16 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
+import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({Key? key}) : super(key: key);
 
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +26,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     const SizedBox(height: SizedBoxSize.sbs25),
                     Image.asset(
                       PngIcons.welcomeScreen,
-                      height: IconSize.iconSize,
+                      height: IconSize.bigIconSize,
                     ),
                     const SizedBox(height: SizedBoxSize.sbs50),
                     Text('Welcome to CINNEMAN! 🎬',
@@ -47,12 +45,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     const SizedBox(height: SizedBoxSize.sbs75),
                     CustomButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Router.of(context).routerDelegate.setNewRoutePath(
+                              RoutePath(route: AppRoutes.login));
+                        },
                         child: Text('Log in, I am gourmet',
                             style: nunito.s18.white)),
                     const SizedBox(height: SizedBoxSize.sbs25),
                     CustomTextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          BlocProvider.of<AuthCubit>(context).loginAsGuest();
+                        },
                         child: Text('I am guest, just want a bite',
                             style: nunito.s18.yellow1)),
                   ],

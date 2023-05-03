@@ -4,16 +4,12 @@ import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
+import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 
-class PhoneNumber extends StatefulWidget {
-  const PhoneNumber({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
-  @override
-  State<PhoneNumber> createState() => PhoneNumberState();
-}
-
-class PhoneNumberState extends State<PhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +24,7 @@ class PhoneNumberState extends State<PhoneNumber> {
                       const SizedBox(height: SizedBoxSize.sbs25),
                       Image.asset(
                         PngIcons.phoneNumberScreen,
-                        height: IconSize.iconSize,
+                        height: IconSize.bigIconSize,
                       ),
                       const SizedBox(height: SizedBoxSize.sbs25),
                       Text(
@@ -51,7 +47,10 @@ class PhoneNumberState extends State<PhoneNumber> {
                       ),
                       const SizedBox(height: SizedBoxSize.sbs100),
                       CustomTextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Router.of(context).routerDelegate.setNewRoutePath(
+                                RoutePath(route: AppRoutes.otp));
+                          },
                           child: Text('Send', style: nunito.s18.yellow1))
                     ],
                   ),
