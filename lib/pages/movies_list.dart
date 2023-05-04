@@ -1,21 +1,18 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/home/presentation/widgets/moview_preview.dart';
-import 'package:cinneman/navigation/app_router_delegate.dart';
 import 'package:cinneman/navigation/app_routes.dart';
-import 'package:cinneman/pages/user_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MoviesListPage extends StatefulWidget {
+class MoviesListPage extends StatelessWidget {
   List<FakeMovies> fakeMovies = FakeUtils.getFakeMovies();
   @override
-  State<MoviesListPage> createState() => _MoviesListPageState();
-}
-
-class _MoviesListPageState extends State<MoviesListPage> {
-  @override
   Widget build(BuildContext context) {
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
@@ -30,10 +27,8 @@ class _MoviesListPageState extends State<MoviesListPage> {
                           Text("Movie menu:"),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UserScreen()));
+                              navigationCubit.push(
+                                  RoutePath(route: AppRoutes.userProfile));
                             },
                             child: Image.asset(
                               PngIcons.cinnemanIcon,
@@ -53,18 +48,15 @@ class _MoviesListPageState extends State<MoviesListPage> {
                 children: [
                   Expanded(
                       child: ListView.builder(
-                          itemCount: widget.fakeMovies.length,
+                          itemCount: fakeMovies.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
-                              onTap: () async {
-                                var delegate = Router.of(context).routerDelegate
-                                    as AppRouterDelegate;
-
-                                await delegate.setNewRoutePath(RoutePath(
+                              onTap: () {
+                                navigationCubit.push(RoutePath(
                                     route: AppRoutes.movieDetailsPage));
                               },
-                              child: MoviewPreview(
-                                  fakeMovies: widget.fakeMovies[index]),
+                              child:
+                                  MoviewPreview(fakeMovies: fakeMovies[index]),
                             );
                           }))
                 ],
@@ -73,31 +65,27 @@ class _MoviesListPageState extends State<MoviesListPage> {
   }
 }
 
-class MyAppBar extends StatefulWidget {
+class MyAppBar extends StatelessWidget {
   Color? color;
   String? title;
   MyAppBar({Key? key, this.color, this.title}) : super(key: key);
 
   @override
-  State<MyAppBar> createState() => _MyAppBarState();
-}
-
-class _MyAppBarState extends State<MyAppBar> {
-  @override
   Widget build(BuildContext context) {
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+
     return AppBar(
-      backgroundColor: widget.color ?? CustomColors.brown1,
+      backgroundColor: color ?? CustomColors.brown1,
       elevation: 0.0,
       title: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.title ?? ''),
+              Text(title ?? ''),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UserScreen()));
+                  navigationCubit.push(RoutePath(route: AppRoutes.userProfile));
                 },
                 child: Image.asset(
                   PngIcons.cinnemanIcon,

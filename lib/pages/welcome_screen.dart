@@ -3,6 +3,7 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/navigation/app_routes.dart';
@@ -46,8 +47,8 @@ class WelcomePage extends StatelessWidget {
                     const SizedBox(height: SizedBoxSize.sbs75),
                     CustomButton(
                         onPressed: () {
-                          Router.of(context).routerDelegate.setNewRoutePath(
-                              RoutePath(route: AppRoutes.login));
+                          BlocProvider.of<NavigationCubit>(context)
+                              .goToPage(RoutePath(route: AppRoutes.login));
                         },
                         child: Text('Log in, I am gourmet',
                             style: nunito.s18.white)),
@@ -55,6 +56,8 @@ class WelcomePage extends StatelessWidget {
                     CustomTextButton(
                         onPressed: () {
                           BlocProvider.of<AuthCubit>(context).loginAsGuest();
+                          BlocProvider.of<NavigationCubit>(context)
+                              .startAuthenticated();
                         },
                         child: Text('I am guest, just want a bite',
                             style: nunito.s18.yellow1)),

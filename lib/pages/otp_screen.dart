@@ -3,6 +3,7 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,8 @@ class OtpPage extends StatelessWidget {
                         CustomTextButton(
                             onPressed: () {
                               BlocProvider.of<AuthCubit>(context).loginUser();
+                              BlocProvider.of<NavigationCubit>(context)
+                                  .startAuthenticated();
                             },
                             child: Text('Send', style: nunito.s18.yellow1))
                       ],
