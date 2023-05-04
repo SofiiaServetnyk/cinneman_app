@@ -5,6 +5,7 @@ import 'package:cinneman/pages/login_screen.dart';
 import 'package:cinneman/pages/movie_details.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:cinneman/pages/otp_screen.dart';
+import 'package:cinneman/pages/payment_screen.dart';
 import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   @override
   Widget build(BuildContext context) {
     if (_showSplashScreen) {
-      Future.delayed(const Duration(seconds: 3)).then((_) {
+      Future.delayed(const Duration(seconds: 0)).then((_) {
         _showSplashScreen = false;
         notifyListeners();
       });
@@ -56,6 +57,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     // Build list of pages based on authentication state
     List<Page> pages =
         isAuthenticated ? _buildAuthenticatedPages() : _buildAnonymousPages();
+
+    pages.add(MaterialPage(child: PaymentScreen()));
 
     return Navigator(
       key: navigatorKey,

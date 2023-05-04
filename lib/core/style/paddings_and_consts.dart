@@ -22,6 +22,7 @@ abstract class SizedBoxSize {
   static const double sbs15 = 15;
   static const double sbs20 = 20;
   static const double sbs25 = 25;
+  static const double sbs30 = 30;
   static const double sbs40 = 40;
   static const double sbs45 = 45;
   static const double sbs50 = 50;

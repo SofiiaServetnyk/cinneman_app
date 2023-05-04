@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField(
+  CustomTextField(
       {Key? key,
       this.limitTextInput,
       this.focusBorder,
@@ -15,6 +15,7 @@ class CustomTextField extends StatefulWidget {
       this.enabledBorder,
       this.maxWidth,
       this.hint,
+      this.slashFormatter,
       this.label,
       this.hintStyle,
       this.fillColor,
@@ -34,6 +35,7 @@ class CustomTextField extends StatefulWidget {
   final Color? focusBorder;
   final double? maxWidth;
   final Widget? prefixicon;
+  bool? slashFormatter = false;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -55,7 +57,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]+'))
           else if (widget.keyboardType == TextInputType.number)
             FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]+')),
-          CardNumberInputFormatter(),
+          widget.slashFormatter == null
+              ? CardNumberInputFormatter()
+              : CardMonthInputFormatter(),
           LengthLimitingTextInputFormatter(widget.limitTextInput ?? null),
         ],
         decoration: InputDecoration(
@@ -98,8 +102,36 @@ class CardNumberInputFormatter extends TextInputFormatter {
       int index = i + 1;
 
       if (index % 4 == 0 && inputData.length != index) {
-        buffer.write(" ");
+        buffer.write(' ');
       }
+      ;
+    }
+    return TextEditingValue(
+      text: buffer.toString(),
+      selection: TextSelection.collapsed(
+        offset: buffer.toString().length,
+      ),
+    );
+  }
+}
+
+class CardMonthInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.selection.baseOffset == 0) return newValue;
+
+    String inputData = newValue.text;
+    StringBuffer buffer = StringBuffer();
+
+    for (var i = 0; i < inputData.length; i++) {
+      buffer.write(inputData[i]);
+      int index = i + 1;
+
+      if (index % 2 == 0 && inputData.length != index) {
+        buffer.write('/');
+      }
+      ;
     }
     return TextEditingValue(
       text: buffer.toString(),
