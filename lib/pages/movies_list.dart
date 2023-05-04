@@ -4,6 +4,7 @@ import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/home/presentation/widgets/moview_preview.dart';
 import 'package:cinneman/navigation/app_router_delegate.dart';
 import 'package:cinneman/navigation/app_routes.dart';
+import 'package:cinneman/pages/user_screen.dart';
 import 'package:flutter/material.dart';
 
 class MoviesListPage extends StatefulWidget {
@@ -21,10 +22,28 @@ class _MoviesListPageState extends State<MoviesListPage> {
                 SliverAppBar(
                   backgroundColor: CustomColors.brown1,
                   elevation: 0.0,
-                  title: Image.asset(
-                    PngIcons.cinnemanIcon,
-                    color: CustomColors.yellow1,
-                    height: 40,
+                  title: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Movie menu:"),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserScreen()));
+                            },
+                            child: Image.asset(
+                              PngIcons.cinnemanIcon,
+                              color: CustomColors.yellow1,
+                              height: 40,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -50,6 +69,46 @@ class _MoviesListPageState extends State<MoviesListPage> {
                           }))
                 ],
               ))),
+    );
+  }
+}
+
+class MyAppBar extends StatefulWidget {
+  Color? color;
+  String? title;
+  MyAppBar({Key? key, this.color, this.title}) : super(key: key);
+
+  @override
+  State<MyAppBar> createState() => _MyAppBarState();
+}
+
+class _MyAppBarState extends State<MyAppBar> {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: widget.color ?? CustomColors.brown1,
+      elevation: 0.0,
+      title: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.title ?? ''),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserScreen()));
+                },
+                child: Image.asset(
+                  PngIcons.cinnemanIcon,
+                  color: CustomColors.yellow17,
+                  height: 50,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/custom_calendar.dart';
 import 'package:cinneman/features/home/presentation/widgets/movie_detail_row.dart';
+import 'package:cinneman/pages/movies_list.dart';
 import 'package:flutter/material.dart';
 
 class MovieDetailsPage extends StatefulWidget {
@@ -78,7 +79,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         ],
                       ),
                     ),
-                  )
+                  ),
+                  MyAppBar(color: Colors.transparent),
                 ],
               ),
             ),

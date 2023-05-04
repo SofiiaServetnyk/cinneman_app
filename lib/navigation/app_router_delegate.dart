@@ -5,7 +5,6 @@ import 'package:cinneman/pages/login_screen.dart';
 import 'package:cinneman/pages/movie_details.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:cinneman/pages/otp_screen.dart';
-import 'package:cinneman/pages/payment_screen.dart';
 import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +57,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     List<Page> pages =
         isAuthenticated ? _buildAuthenticatedPages() : _buildAnonymousPages();
 
-    pages.add(MaterialPage(child: PaymentScreen()));
+    pages.add(MaterialPage(child: MovieDetailsPage()));
 
     return Navigator(
       key: navigatorKey,
