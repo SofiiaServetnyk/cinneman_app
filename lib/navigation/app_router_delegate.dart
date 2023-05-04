@@ -9,6 +9,8 @@ import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/session_seleciton.dart';
+
 class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -57,7 +59,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     List<Page> pages =
         isAuthenticated ? _buildAuthenticatedPages() : _buildAnonymousPages();
 
-    pages.add(MaterialPage(child: MovieDetailsPage()));
+    pages.add(MaterialPage(child: SeatSelectionPage()));
 
     return Navigator(
       key: navigatorKey,

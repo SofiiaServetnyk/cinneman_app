@@ -101,7 +101,7 @@ class _MyAppBarState extends State<MyAppBar> {
                 },
                 child: Image.asset(
                   PngIcons.cinnemanIcon,
-                  color: CustomColors.yellow17,
+                  color: CustomColors.white,
                   height: 50,
                 ),
               ),
