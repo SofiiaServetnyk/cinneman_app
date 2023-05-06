@@ -135,7 +135,7 @@ class RowNumberContainer extends StatelessWidget {
         color: CustomColors.yellow17,
       ),
       child: Center(
-          child: Text(this.numberOfRows.toString(), style: nunito.black.s12)),
+          child: Text(this.numberOfRows.toString(), style: nunito.white.s12)),
     );
   }
 }
@@ -152,19 +152,31 @@ class _SeatContainerState extends State<SeatContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
-      width: 55,
+      width: 25,
       margin: EdgeInsets.all(5),
       child: Center(
           child: Wrap(
         direction: Axis.vertical,
         children: [
-          Text("1"),
-          Image.asset(
-            fit: BoxFit.contain,
-            PngIcons.betterString,
-            width: 30,
-            height: 30,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black,
+                width: 1.0,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1),
+              child: ClipOval(
+                child: Image.asset(
+                  fit: BoxFit.contain,
+                  PngIcons.betterString,
+                  width: 25,
+                ),
+              ),
+            ),
           ),
         ],
       )),
@@ -212,9 +224,13 @@ class MovieBanner extends StatelessWidget {
                     Text("12 May, 12.05", style: nunito.s14),
                     Container(
                         decoration: BoxDecoration(
-                            color: Colors.purple,
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text('120 min', style: nunito.s12))
+                            color: CustomColors.yellow17,
+                            borderRadius:
+                                BorderRadius.circular(CustomBorderRadius.br)),
+                        child: Padding(
+                          padding: Paddings.all5,
+                          child: Text('120 min', style: nunito.s12.white),
+                        ))
                   ],
                 ),
               )
