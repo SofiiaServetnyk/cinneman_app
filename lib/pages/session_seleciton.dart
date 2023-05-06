@@ -57,33 +57,84 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                 padding: Paddings.all15,
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            MovieBanner(),
-                          ],
-                        ),
-                        SizedBox(
-                          height: SizedBoxSize.sbs20,
-                        ),
-                        InteractiveViewer(
-                          constrained: true,
-                          scaleEnabled: true,
-                          boundaryMargin: EdgeInsets.all(double.infinity),
-                          child: IntrinsicWidth(
-                            child: IntrinsicHeight(
-                              child: SeatGrid(
-                                NumberOfSeats: 16,
-                                NumberOfRows: widget.numberOfRows!,
-                              ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MovieBanner(),
+                        ],
+                      ),
+                      SizedBox(
+                        height: SizedBoxSize.sbs20,
+                      ),
+                      Container(
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                        child: SizedBox(
+                          height: 300,
+                          child: InteractiveViewer(
+                            constrained: false,
+                            scaleEnabled: true,
+                            boundaryMargin: EdgeInsets.all(double.infinity),
+                            alignment: Alignment.center,
+                            minScale: 0.2,
+                            maxScale: 2,
+                            child: Column(
+                              children: [
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                                SeatGrid(
+                                  numberOfSeats: 16,
+                                  numberOfRows: widget.numberOfRows!,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -94,23 +145,22 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
 }
 
 class SeatGrid extends StatelessWidget {
-  int NumberOfRows;
-  int NumberOfSeats;
-  SeatGrid({Key? key, required this.NumberOfRows, required this.NumberOfSeats})
+  int numberOfRows;
+  int numberOfSeats;
+
+  SeatGrid({Key? key, required this.numberOfRows, required this.numberOfSeats})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      direction: Axis.horizontal,
       children: [
         RowNumberContainer(numberOfRows: 7),
         Wrap(
           direction: Axis.horizontal,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ...List.generate(
-                NumberOfSeats,
+                numberOfSeats,
                 (index) => SeatContainer(
                       SeatType: 0,
                     ))
