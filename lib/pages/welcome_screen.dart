@@ -15,6 +15,9 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var authCubit = BlocProvider.of<AuthCubit>(context);
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+
     return Scaffold(
         backgroundColor: CustomColors.brown2,
         body: SafeArea(
@@ -47,17 +50,19 @@ class WelcomePage extends StatelessWidget {
                     const SizedBox(height: SizedBoxSize.sbs75),
                     CustomButton(
                         onPressed: () {
-                          BlocProvider.of<NavigationCubit>(context)
+                          navigationCubit
                               .goToPage(RoutePath(route: AppRoutes.login));
                         },
                         child: Text('Log in, I am gourmet',
                             style: nunito.s18.white)),
                     const SizedBox(height: SizedBoxSize.sbs25),
                     CustomTextButton(
-                        onPressed: () {
-                          BlocProvider.of<AuthCubit>(context).loginAsGuest();
-                          BlocProvider.of<NavigationCubit>(context)
-                              .startAuthenticated();
+                        onPressed: () async {
+                          await authCubit.loginAsGuest();
+
+                          if (authCubit.state.isAuthenticated) {
+                            navigationCubit.startAuthenticated();
+                          }
                         },
                         child: Text('I am guest, just want a bite',
                             style: nunito.s18.yellow1)),

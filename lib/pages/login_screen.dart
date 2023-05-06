@@ -2,6 +2,7 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
@@ -9,11 +10,21 @@ import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String phoneNumber = "";
+
+  @override
   Widget build(BuildContext context) {
+    var authCubit = BlocProvider.of<AuthCubit>(context);
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+
     return Scaffold(
         backgroundColor: CustomColors.brown2,
         body: SafeArea(
@@ -45,13 +56,22 @@ class LoginPage extends StatelessWidget {
                         style: nunito.white.w500.s16,
                         keyboardType: TextInputType.phone,
                         cursorColor: CustomColors.white,
-                        maxLength: 15,
+                        maxLength: 20,
+                        onChanged: (s) {
+                          setState(() {
+                            phoneNumber = s.replaceAll(' ', '');
+                          });
+                        },
                       ),
                       const SizedBox(height: SizedBoxSize.sbs100),
                       CustomTextButton(
-                          onPressed: () {
-                            BlocProvider.of<NavigationCubit>(context)
-                                .goToPage(RoutePath(route: AppRoutes.otp));
+                          onPressed: () async {
+                            await authCubit.enterPhoneNumber(phoneNumber);
+
+                            if (authCubit.state.phoneNumber != null) {
+                              navigationCubit
+                                  .goToPage(RoutePath(route: AppRoutes.otp));
+                            }
                           },
                           child: Text('Send', style: nunito.s18.yellow1))
                     ],

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class AppRouterDelegate extends RouterDelegate<RoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
-  final GlobalKey<NavigatorState> navigatorKey;
+  GlobalKey<NavigatorState> navigatorKey;
 
   final AuthCubit _authCubit;
   final NavigationCubit _navigationCubit;
@@ -68,7 +68,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     if (requiresAuth && !isAuthenticated) {
       _navigationCubit.goToPage(RoutePath(route: AppRoutes.login));
     } else {
-      _navigationCubit.push(routePath);
+      _navigationCubit.goToPage(routePath);
     }
   }
 }

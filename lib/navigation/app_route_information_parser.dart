@@ -24,8 +24,6 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
           return RoutePath(route: AppRoutes.login);
         case '/login/otp':
           return RoutePath(route: AppRoutes.otp);
-        default:
-          return RoutePath(route: AppRoutes.welcomeScreen);
       }
     }
 
@@ -48,16 +46,16 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
         return RoutePath(route: AppRoutes.userProfile);
       case '/tickets':
         return RoutePath(route: AppRoutes.userTickets);
-      default:
-        return RoutePath(route: AppRoutes.moviesListPage);
     }
+
+    return RoutePath(route: AppRoutes.splash);
   }
 
   @override
   RouteInformation? restoreRouteInformation(RoutePath path) {
     switch (path.route) {
-      case AppRoutes.splash:
-        return RouteInformation(location: '/');
+      // case AppRoutes.splash:
+      //   return RouteInformation(location: '/');
       case AppRoutes.welcomeScreen:
         return RouteInformation(location: '/welcome');
       case AppRoutes.login:
@@ -77,7 +75,7 @@ class AppRouteInformationParser extends RouteInformationParser<RoutePath> {
       case AppRoutes.userTickets:
         return RouteInformation(location: '/tickets');
       default:
-        return null;
+        return RouteInformation(location: '/');
     }
   }
 }

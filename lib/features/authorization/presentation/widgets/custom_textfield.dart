@@ -20,7 +20,8 @@ class CustomTextField extends StatefulWidget {
       this.hintStyle,
       this.fillColor,
       required this.keyboardType,
-      this.cursorColor})
+      this.cursorColor,
+      this.onChanged})
       : super(key: key);
   final String? hint;
   final String? label;
@@ -37,6 +38,8 @@ class CustomTextField extends StatefulWidget {
   final Widget? prefixicon;
   bool? slashFormatter = false;
 
+  final Function(String)? onChanged;
+
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -52,6 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         style: (widget.style ?? nunito.black.w400.s16),
         maxLength: widget.maxLength,
         keyboardType: widget.keyboardType,
+        onChanged: widget.onChanged,
         inputFormatters: [
           if (widget.keyboardType == TextInputType.phone)
             FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]+'))

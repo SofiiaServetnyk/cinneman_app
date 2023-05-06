@@ -70,17 +70,17 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                           height: SizedBoxSize.sbs20,
                         ),
                         InteractiveViewer(
+                          constrained: true,
                           scaleEnabled: true,
                           boundaryMargin: EdgeInsets.all(double.infinity),
-                          child: Center(
-                              child: Column(
-                            children: [
-                              SeatGrid(
+                          child: IntrinsicWidth(
+                            child: IntrinsicHeight(
+                              child: SeatGrid(
                                 NumberOfSeats: 16,
                                 NumberOfRows: widget.numberOfRows!,
                               ),
-                            ],
-                          )),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -101,22 +101,20 @@ class SeatGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Wrap(
+      direction: Axis.horizontal,
       children: [
         RowNumberContainer(numberOfRows: 7),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...List.generate(
-                  NumberOfSeats,
-                  (index) => Center(
-                          child: SeatContainer(
-                        SeatType: 0,
-                      )))
-            ],
-          ),
+        Wrap(
+          direction: Axis.horizontal,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...List.generate(
+                NumberOfSeats,
+                (index) => SeatContainer(
+                      SeatType: 0,
+                    ))
+          ],
         )
       ],
     );
@@ -155,9 +153,11 @@ class _SeatContainerState extends State<SeatContainer> {
   Widget build(BuildContext context) {
     return Container(
       height: 55,
+      width: 55,
       margin: EdgeInsets.all(5),
       child: Center(
-          child: Column(
+          child: Wrap(
+        direction: Axis.vertical,
         children: [
           Text("1"),
           Image.asset(
@@ -213,7 +213,7 @@ class MovieBanner extends StatelessWidget {
                     Container(
                         decoration: BoxDecoration(
                             color: Colors.purple,
-                            borderRadius: BorderRadius.circular()),
+                            borderRadius: BorderRadius.circular(8)),
                         child: Text('120 min', style: nunito.s12))
                   ],
                 ),

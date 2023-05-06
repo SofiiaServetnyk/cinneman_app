@@ -3,17 +3,28 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/auth/auth_state.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OtpPage extends StatelessWidget {
+class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);
 
   @override
+  State<OtpPage> createState() => _OtpPageState();
+}
+
+class _OtpPageState extends State<OtpPage> {
+  String otp = "";
+
+  @override
   Widget build(BuildContext context) {
+    var authCubit = BlocProvider.of<AuthCubit>(context);
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+
     return Scaffold(
         backgroundColor: CustomColors.brown2,
         body: SafeArea(
@@ -46,13 +57,20 @@ class OtpPage extends StatelessWidget {
                           keyboardType: TextInputType.number,
                           cursorColor: CustomColors.white,
                           maxLength: 4,
+                          onChanged: (s) {
+                            setState(() {
+                              otp = s;
+                            });
+                          },
                         ),
                         const SizedBox(height: SizedBoxSize.sbs100),
                         CustomTextButton(
-                            onPressed: () {
-                              BlocProvider.of<AuthCubit>(context).loginUser();
-                              BlocProvider.of<NavigationCubit>(context)
-                                  .startAuthenticated();
+                            onPressed: () async {
+                              await authCubit.validateOtp(otp);
+
+                              if (authCubit.state is Authenticated) {
+                                navigationCubit.startAuthenticated();
+                              }
                             },
                             child: Text('Send', style: nunito.s18.yellow1))
                       ],

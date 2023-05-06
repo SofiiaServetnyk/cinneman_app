@@ -11,7 +11,7 @@ class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit(this.authCubit)
       : super(
             NavigationState(routePaths: [RoutePath(route: AppRoutes.splash)])) {
-    Future.delayed(Duration(seconds: 2)).then((_) {
+    Future.delayed(const Duration(seconds: 2)).then((_) {
       if (authCubit.state.isAuthenticated) {
         startAuthenticated();
       } else {
