@@ -2,6 +2,11 @@ class MyRow {
   List<Seat> getFakeSeats() {
     return [
       Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
+      Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
+      Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
+      Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
+      Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
+      Seat(id: 1, index: 1, type: 0, price: 160, isAvailable: true),
       Seat(id: 2, index: 2, type: 1, price: 160, isAvailable: true),
       Seat(id: 2, index: 2, type: 1, price: 160, isAvailable: false),
       Seat(id: 2, index: 2, type: 0, price: 160, isAvailable: false),
@@ -9,7 +14,7 @@ class MyRow {
     ];
   }
 
-  int getNumberOfRows() {
+  int getNumberOfSeats() {
     return getFakeSeats().length;
   }
 }

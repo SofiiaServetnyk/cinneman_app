@@ -1,6 +1,7 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_routes.dart';
+import 'package:cinneman/pages/session_seleciton.dart';
 import 'package:flutter/material.dart';
 
 class AppRouterDelegate extends RouterDelegate<RoutePath>
@@ -35,6 +36,8 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
     List<Page> pages = _navigationCubit.state.stack
         .map((r) => _pageFactory.createPage(r))
         .toList();
+
+    pages.add(MaterialPage(child: SeatSelectionPage()));
 
     return Navigator(
       key: navigatorKey,

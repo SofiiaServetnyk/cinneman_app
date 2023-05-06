@@ -1,14 +1,14 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
+import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/data/models/fake_session.dart';
 import 'package:flutter/material.dart';
 
 class SeatSelectionPage extends StatefulWidget {
   MyRow myRow = MyRow();
-  int? numberOfRows;
-  String long =
-      " quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt";
+  int? numberOfRows = 6;
+  int? numberOfSeats;
 
   SeatSelectionPage({Key? key}) : super(key: key);
 
@@ -17,21 +17,30 @@ class SeatSelectionPage extends StatefulWidget {
 }
 
 class _SeatSelectionPageState extends State<SeatSelectionPage> {
-  int? numberOfRows;
-  @override
+  int? numberOfSeats;
+
   @override
   void initState() {
     super.initState();
-    numberOfRows = widget.myRow.getNumberOfRows();
+    numberOfSeats = widget.myRow.getNumberOfSeats();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(5.0),
+          preferredSize: const Size.fromHeight(5.0),
           child: AppBar(
             backgroundColor: CustomColors.white,
             elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: CustomColors.brown1,
+              ),
+              onPressed: () {
+                // Handle back button press here
+              },
+            ),
           ),
         ),
         body: Stack(
@@ -45,7 +54,7 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
             Container(
               color: CustomColors.white.withOpacity(0.9),
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: Paddings.all15,
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: SingleChildScrollView(
@@ -54,36 +63,25 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                                height: 100,
-                                width: 325,
-                                color: Colors.purpleAccent,
-                                child: Text("Just a placeholder!!!!"))
+                            MovieBanner(),
                           ],
                         ),
                         SizedBox(
                           height: SizedBoxSize.sbs20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [Text("widget.long")],
-                            ),
-                            Expanded(
+                        InteractiveViewer(
+                          scaleEnabled: true,
+                          boundaryMargin: EdgeInsets.all(double.infinity),
+                          child: Center(
                               child: Column(
-                                children: [
-                                  Text(widget.long),
-                                ],
+                            children: [
+                              SeatGrid(
+                                NumberOfSeats: 16,
+                                NumberOfRows: widget.numberOfRows!,
                               ),
-                            ),
-                            Column(
-                              children: [
-                                ListView.builder(itemBuilder: itemBuilder)
-                              ],
-                            ),
-                          ],
-                        )
+                            ],
+                          )),
+                        ),
                       ],
                     ),
                   ),
@@ -92,5 +90,136 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
             )
           ],
         ));
+  }
+}
+
+class SeatGrid extends StatelessWidget {
+  int NumberOfRows;
+  int NumberOfSeats;
+  SeatGrid({Key? key, required this.NumberOfRows, required this.NumberOfSeats})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        RowNumberContainer(numberOfRows: 7),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...List.generate(
+                  NumberOfSeats,
+                  (index) => Center(
+                          child: SeatContainer(
+                        SeatType: 0,
+                      )))
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class RowNumberContainer extends StatelessWidget {
+  int numberOfRows;
+  RowNumberContainer({Key? key, required this.numberOfRows}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: CustomColors.yellow17,
+      ),
+      child: Center(
+          child: Text(this.numberOfRows.toString(), style: nunito.black.s12)),
+    );
+  }
+}
+
+class SeatContainer extends StatefulWidget {
+  SeatContainer({Key? key, required this.SeatType}) : super(key: key);
+  int SeatType;
+
+  @override
+  State<SeatContainer> createState() => _SeatContainerState();
+}
+
+class _SeatContainerState extends State<SeatContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 55,
+      margin: EdgeInsets.all(5),
+      child: Center(
+          child: Column(
+        children: [
+          Text("1"),
+          Image.asset(
+            fit: BoxFit.contain,
+            PngIcons.betterString,
+            width: 30,
+            height: 30,
+          ),
+        ],
+      )),
+    );
+  }
+}
+
+class MovieBanner extends StatelessWidget {
+  const MovieBanner({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+          height: 100,
+          child: Row(
+            children: [
+              Padding(
+                padding: Paddings.all10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: CustomColors.brown1,
+                      width: 2,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage(PngIcons.helperPoster),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Title really long for tests",
+                      style: nunito.w500.s22,
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                    ),
+                    Text("12 May, 12.05", style: nunito.s14),
+                    Container(
+                        decoration: BoxDecoration(
+                            color: Colors.purple,
+                            borderRadius: BorderRadius.circular()),
+                        child: Text('120 min', style: nunito.s12))
+                  ],
+                ),
+              )
+            ],
+          )),
+    );
   }
 }

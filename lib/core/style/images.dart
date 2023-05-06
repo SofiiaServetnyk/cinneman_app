@@ -10,6 +10,7 @@ abstract class PngIcons {
   static const String cardIcon = '$_path/buscuit_card_icon.png';
   static const String cvvIcon = '$_path/cvv_icon.png';
   static const String calendarIcon = '$_path/calendar_icon.png';
+  static const String betterString = '$_path/better_seat.png';
 
   static const String seatSelection = '$_path/seatselection_screen.png';
 }
