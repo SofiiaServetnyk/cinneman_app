@@ -40,7 +40,7 @@ class AuthApiService {
     return null;
   }
 
-  Future<bool> sendOtp(String phoneNumber) async {
+  Future<bool> sendOtpRequest(String phoneNumber) async {
     try {
       final response = await _dio.post(
         "$apiUrl/api/auth/otp",

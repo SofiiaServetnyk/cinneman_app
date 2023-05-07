@@ -27,7 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> enterPhoneNumber(String phoneNumber) async {
-    final success = await _authApi.sendOtp(phoneNumber);
+    final success = await _authApi.sendOtpRequest(phoneNumber);
     if (success) {
       emit(Unauthorized(phoneNumber: phoneNumber));
     } else {

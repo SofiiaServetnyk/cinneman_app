@@ -1,6 +1,7 @@
 abstract class AuthState {
   final bool isAuthenticated;
   final bool isAnonymous;
+
   final String? accessToken;
   final String? phoneNumber;
 

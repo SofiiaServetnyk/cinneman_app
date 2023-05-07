@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          routerDelegate: AppRouterDelegate(
+          routerDelegate: CinnemanRouterDelegate(
               authCubit: authCubit,
               navigationCubit: navigationCubit,
               pageFactory: PageFactory()),

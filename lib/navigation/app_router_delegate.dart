@@ -3,7 +3,7 @@ import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 
-class AppRouterDelegate extends RouterDelegate<RouteConfig>
+class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteConfig> {
   GlobalKey<NavigatorState> navigatorKey;
 
@@ -11,7 +11,7 @@ class AppRouterDelegate extends RouterDelegate<RouteConfig>
   final NavigationCubit _navigationCubit;
   final PageFactory _pageFactory;
 
-  AppRouterDelegate(
+  CinnemanRouterDelegate(
       {required AuthCubit authCubit,
       required NavigationCubit navigationCubit,
       required PageFactory pageFactory})

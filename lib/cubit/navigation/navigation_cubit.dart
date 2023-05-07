@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
   AuthCubit authCubit;
-  // NavigationCubit()
-  //     : super(NavigationState(routePath: RoutePath(route: AppRoutes.splash)));
 
   NavigationCubit(this.authCubit)
       : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)])) {
@@ -14,12 +12,12 @@ class NavigationCubit extends Cubit<NavigationState> {
       if (authCubit.state.isAuthenticated) {
         startAuthenticated();
       } else {
-        startAnonymous();
+        startUnauthorized();
       }
     });
   }
 
-  void startAnonymous() {
+  void startUnauthorized() {
     goToPage(RouteConfig(route: AppRoutes.welcomeScreen));
   }
 
