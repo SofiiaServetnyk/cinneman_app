@@ -97,7 +97,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
           focusedDay: focusedDay,
           firstDay: DateTime.now(),
           calendarStyle: CalendarStyle(
-              weekendTextStyle: nunito.grey,
+              weekendTextStyle: nunito,
               selectedDecoration: BoxDecoration(
                 color: CustomColors.yellow2,
                 shape: BoxShape.circle,
