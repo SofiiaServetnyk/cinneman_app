@@ -40,18 +40,27 @@ class _CustomCalendarState extends State<CustomCalendar> {
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
       TableCalendar(
+          daysOfWeekStyle:
+              DaysOfWeekStyle(weekdayStyle: nunito, weekendStyle: nunito),
           rowHeight: 40,
           startingDayOfWeek: StartingDayOfWeek.monday,
           selectedDayPredicate: (day) => isSameDay(day, focusedDay),
           availableGestures: AvailableGestures.all,
           onDaySelected: onDaySelected,
-          headerStyle: const HeaderStyle(
+          headerStyle: HeaderStyle(
+            rightChevronIcon:
+                Icon(Icons.arrow_circle_right, color: CustomColors.yellow1),
+            leftChevronIcon:
+                Icon(Icons.arrow_circle_left, color: CustomColors.yellow1),
+            formatButtonTextStyle: nunito,
+            titleTextStyle: nunito.s18,
             formatButtonVisible: false,
             titleCentered: true,
           ),
           focusedDay: focusedDay,
           firstDay: DateTime.now(),
           calendarStyle: CalendarStyle(
+              weekendTextStyle: nunito.grey,
               selectedDecoration: BoxDecoration(
                 color: CustomColors.yellow2,
                 shape: BoxShape.circle,
@@ -64,7 +73,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
           lastDay: widget.lastDay),
       const Divider(),
       const SizedBox(height: SizedBoxSize.sbs10),
-      Container(child: const Text("Sessions:")),
+      Container(child: Text("Sweet Showtimes:", style: nunito.black)),
       const SizedBox(height: SizedBoxSize.sbs10),
       Padding(
         padding: Paddings.all5,

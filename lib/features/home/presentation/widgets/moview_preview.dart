@@ -31,7 +31,7 @@ class MoviePreview extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                height: 150,
+                height: 250,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(CustomBorderRadius.br),
                     gradient: LinearGradient(
