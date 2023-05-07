@@ -203,7 +203,7 @@ class _SeatContainerState extends State<SeatContainer> {
   Widget build(BuildContext context) {
     return Container(
       width: 25,
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Center(
           child: Wrap(
         direction: Axis.vertical,
@@ -222,7 +222,7 @@ class _SeatContainerState extends State<SeatContainer> {
               child: ClipOval(
                 child: Image.asset(
                   fit: BoxFit.contain,
-                  PngIcons.betterString,
+                  PngIcons.betterSeat,
                   width: 25,
                 ),
               ),
@@ -254,7 +254,7 @@ class MovieBanner extends StatelessWidget {
                       width: 2,
                     ),
                   ),
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 40,
                     backgroundImage: AssetImage(PngIcons.helperPoster),
                   ),
