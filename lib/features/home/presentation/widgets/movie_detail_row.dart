@@ -18,10 +18,10 @@ class MovieDetailRow extends StatelessWidget {
           title.toUpperCase(),
           style: TextStyle(
               fontFamily: 'Morganite',
-              fontSize: 24,
+              fontSize: 26,
               color: CustomColors.brown3),
         ),
-        Text(description, style: nunito.black.s12),
+        Text(description, style: nunito.black),
         SizedBox(
           height: 20,
         )

@@ -1,13 +1,13 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
-import 'package:cinneman/data/models/fake_movies.dart';
+import 'package:cinneman/data/models/movies.dart';
 import 'package:flutter/material.dart';
 
-class MoviewPreview extends StatelessWidget {
-  FakeMovies fakeMovies;
+class MoviePreview extends StatelessWidget {
+  Movie movie;
 
-  MoviewPreview({required this.fakeMovies});
+  MoviePreview({required this.movie});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -20,8 +20,8 @@ class MoviewPreview extends StatelessWidget {
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(CustomBorderRadius.br),
-                child: Image.asset(
-                  this.fakeMovies.image,
+                child: Image.network(
+                  this.movie.image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -59,7 +59,7 @@ class MoviewPreview extends StatelessWidget {
                         child: Center(
                             child: Text(
                                 style: nunito.brown1.s14.w800,
-                                '${this.fakeMovies.age}+')))
+                                '${this.movie.age}+')))
                   ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,12 +71,12 @@ class MoviewPreview extends StatelessWidget {
                             Text(
                                 maxLines: 2,
                                 overflow: TextOverflow.fade,
-                                this.fakeMovies.name,
+                                this.movie.name,
                                 style: nunito.white.w800.s24),
                             Text(
                               maxLines: 1,
                               overflow: TextOverflow.fade,
-                              this.fakeMovies.genre,
+                              this.movie.genre,
                               style: nunito.white.w300,
                             ),
                           ],
@@ -86,7 +86,7 @@ class MoviewPreview extends StatelessWidget {
                         children: [
                           Text(
                             style: nunito.white.w300,
-                            '${this.fakeMovies.duration} min',
+                            '${this.movie.duration} min',
                           ),
                         ],
                       )

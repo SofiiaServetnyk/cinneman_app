@@ -30,7 +30,7 @@ class RouteConfig {
   RouteConfig({this.route, this.args});
 }
 
-class PageFactory {
+class PageGenerator {
   MaterialPage createPage(RouteConfig config) {
     switch (config.route) {
       case AppRoutes.welcomeScreen:
@@ -48,8 +48,10 @@ class PageFactory {
             child: MoviesListPage(), key: ValueKey(AppRoutes.moviesListPage));
 
       case AppRoutes.movieDetailsPage:
+        var movieId = config.args as int;
+
         return MaterialPage(
-            child: MovieDetailsPage(),
+            child: MovieDetailsPage(movieId: movieId),
             key: ValueKey(AppRoutes.movieDetailsPage));
 
       case AppRoutes.userProfile:

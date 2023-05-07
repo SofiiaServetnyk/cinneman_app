@@ -9,16 +9,16 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
 
   final AuthCubit _authCubit;
   final NavigationCubit _navigationCubit;
-  final PageFactory _pageFactory;
+  final PageGenerator _pageGenerator;
 
   CinnemanRouterDelegate(
       {required AuthCubit authCubit,
       required NavigationCubit navigationCubit,
-      required PageFactory pageFactory})
+      required PageGenerator pageGenerator})
       : navigatorKey = GlobalKey<NavigatorState>(),
         _authCubit = authCubit,
         _navigationCubit = navigationCubit,
-        _pageFactory = pageFactory {
+        _pageGenerator = pageGenerator {
     _navigationCubit.stream.listen((_) {
       notifyListeners();
     });
@@ -33,7 +33,7 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
   @override
   Widget build(BuildContext context) {
     List<Page> pages = _navigationCubit.state.stack
-        .map((r) => _pageFactory.createPage(r))
+        .map((r) => _pageGenerator.createPage(r))
         .toList();
 
     // pages.add(MaterialPage(child: SeatSelectionPage()));

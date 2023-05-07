@@ -1,30 +1,4 @@
-import 'dart:convert';
-
-Movies moviesFromJson(String str) => Movies.fromJson(json.decode(str));
-
-String moviesToJson(Movies data) => json.encode(data.toJson());
-
-class Movies {
-  bool success;
-  List<Datum> data;
-
-  Movies({
-    required this.success,
-    required this.data,
-  });
-
-  factory Movies.fromJson(Map<String, dynamic> json) => Movies(
-        success: json["success"],
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "success": success,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
-}
-
-class Datum {
+class Movie {
   int id;
   String name;
   int age;
@@ -44,7 +18,7 @@ class Datum {
   String screenwriter;
   String studio;
 
-  Datum({
+  Movie({
     required this.id,
     required this.name,
     required this.age,
@@ -65,7 +39,7 @@ class Datum {
     required this.studio,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
         id: json["id"],
         name: json["name"],
         age: json["age"],
@@ -85,25 +59,4 @@ class Datum {
         screenwriter: json["screenwriter"],
         studio: json["studio"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "age": age,
-        "trailer": trailer,
-        "image": image,
-        "smallImage": smallImage,
-        "originalName": originalName,
-        "duration": duration,
-        "language": language,
-        "rating": rating,
-        "year": year,
-        "country": country,
-        "genre": genre,
-        "plot": plot,
-        "starring": starring,
-        "director": director,
-        "screenwriter": screenwriter,
-        "studio": studio,
-      };
 }

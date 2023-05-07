@@ -1,14 +1,14 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
+import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
-import 'package:cinneman/data/models/fake_movies.dart';
 import 'package:cinneman/features/home/presentation/widgets/moview_preview.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoviesListPage extends StatelessWidget {
-  List<FakeMovies> fakeMovies = FakeUtils.getFakeMovies();
   @override
   Widget build(BuildContext context) {
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
@@ -24,16 +24,21 @@ class MoviesListPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Movie menu:"),
+                          Text("Movies menu:", style: nunito.white.s18),
                           GestureDetector(
                             onTap: () {
                               navigationCubit.push(
                                   RouteConfig(route: AppRoutes.userProfile));
                             },
-                            child: Image.asset(
-                              PngIcons.cinnemanIcon,
-                              color: CustomColors.yellow1,
-                              height: 40,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: CustomColors.yellow1),
+                              child: Image.asset(
+                                PngIcons.cinnemanIcon,
+                                color: CustomColors.white,
+                                height: 30,
+                              ),
                             ),
                           ),
                         ],
@@ -42,25 +47,31 @@ class MoviesListPage extends StatelessWidget {
                   ),
                 ),
               ],
-          body: Container(
-              color: CustomColors.white,
-              child: Column(
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                          itemCount: fakeMovies.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                navigationCubit.push(RouteConfig(
-                                    route: AppRoutes.movieDetailsPage));
-                              },
-                              child:
-                                  MoviewPreview(fakeMovies: fakeMovies[index]),
-                            );
-                          }))
-                ],
-              ))),
+          body: BlocBuilder<MoviesCubit, MoviesState>(
+            builder: (context, state) {
+              var movies = state.movies.values.toList();
+
+              return Container(
+                  color: CustomColors.white,
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: ListView.builder(
+                              itemCount: movies.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    navigationCubit.push(RouteConfig(
+                                        route: AppRoutes.movieDetailsPage,
+                                        args: movies[index].id));
+                                  },
+                                  child: MoviePreview(movie: movies[index]),
+                                );
+                              }))
+                    ],
+                  ));
+            },
+          )),
     );
   }
 }
@@ -68,6 +79,7 @@ class MoviesListPage extends StatelessWidget {
 class MyAppBar extends StatelessWidget {
   Color? color;
   String? title;
+
   MyAppBar({Key? key, this.color, this.title}) : super(key: key);
 
   @override
@@ -88,10 +100,14 @@ class MyAppBar extends StatelessWidget {
                   navigationCubit
                       .push(RouteConfig(route: AppRoutes.userProfile));
                 },
-                child: Image.asset(
-                  PngIcons.cinnemanIcon,
-                  color: CustomColors.white,
-                  height: 50,
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: CustomColors.yellow1),
+                  child: Image.asset(
+                    PngIcons.cinnemanIcon,
+                    color: CustomColors.white,
+                    height: 30,
+                  ),
                 ),
               ),
             ],
