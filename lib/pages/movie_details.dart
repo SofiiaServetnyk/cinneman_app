@@ -138,7 +138,8 @@ class MovieDetailsPage extends StatelessWidget {
                                               CustomBorderRadius.br))),
                                   context: context,
                                   builder: (context) => CustomCalendar()),
-                              child: const Text('Delicious tickets')))
+                              child: Text('Delicious tickets',
+                                  style: nunito.white.s16)))
                     ],
                   ),
                 ))

@@ -85,6 +85,7 @@ class CustomTextStyle extends TextStyle {
   // colors
   CustomTextStyle get paleBlack => copyWith(color: CustomColors.paleBlack);
   CustomTextStyle get white => copyWith(color: CustomColors.white);
+  CustomTextStyle get grey => copyWith(color: CustomColors.grey);
   CustomTextStyle get brown1 => copyWith(color: CustomColors.brown1);
   CustomTextStyle get yellow1 => copyWith(color: CustomColors.yellow1);
   CustomTextStyle get black => copyWith(color: CustomColors.black);

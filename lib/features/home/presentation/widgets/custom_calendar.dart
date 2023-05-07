@@ -1,4 +1,6 @@
+import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
+import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
           ),
           focusedDay: today,
           firstDay: today,
+          calendarStyle: CalendarStyle(
+              selectedDecoration: BoxDecoration(
+                color: CustomColors.yellow2,
+                shape: BoxShape.circle,
+              ),
+              outsideTextStyle: nunito,
+              todayDecoration: BoxDecoration(
+                  color: CustomColors.yellow1, shape: BoxShape.circle),
+              defaultTextStyle: nunito.grey,
+              disabledTextStyle: nunito.grey),
           lastDay: lastDay),
       const Divider(),
       const SizedBox(height: SizedBoxSize.sbs10),
