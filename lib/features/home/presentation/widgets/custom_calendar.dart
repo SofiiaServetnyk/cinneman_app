@@ -29,6 +29,7 @@ class CustomCalendar extends StatefulWidget {
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
+  bool loading = true;
   List<MovieSession> sessions = [];
   DateTime focusedDay = DateTime.now();
 
@@ -47,10 +48,18 @@ class _CustomCalendarState extends State<CustomCalendar> {
   }
 
   Future<List<MovieSession>> loadSessions(DateTime day) async {
+    setState(() {
+      loading = true;
+    });
+
     var movieService = Provider.of<MovieService>(context, listen: false);
     var sessions = await movieService.getMovieSessions(
         movieId: widget.movie.id, date: day);
     sessions.sort((a, b) => a.date.compareTo(b.date));
+
+    setState(() {
+      loading = false;
+    });
 
     return sessions;
   }
@@ -107,14 +116,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
         padding: Paddings.all5,
         child: SizedBox(
           height: 50,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: sessions.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SessionSelectionButton(
-                    sessionTime:
-                        DateFormat('HH:mm').format(sessions[index].date));
-              }),
+          child: loading
+              ? Text('Loading...', style: nunito)
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: sessions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SessionSelectionButton(
+                        sessionTime:
+                            DateFormat('HH:mm').format(sessions[index].date));
+                  }),
         ),
       ),
       Padding(
