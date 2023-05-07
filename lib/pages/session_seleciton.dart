@@ -3,14 +3,17 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/data/models/fake_session.dart';
+import 'package:cinneman/data/models/session_models.dart';
 import 'package:flutter/material.dart';
 
 class SeatSelectionPage extends StatefulWidget {
+  MovieSession session;
+
   MyRow myRow = MyRow();
   int? numberOfRows = 6;
   int? numberOfSeats;
 
-  SeatSelectionPage({Key? key}) : super(key: key);
+  SeatSelectionPage({Key? key, required this.session}) : super(key: key);
 
   @override
   State<SeatSelectionPage> createState() => _SeatSelectionPageState();
@@ -256,7 +259,6 @@ class MovieBanner extends StatelessWidget {
                   ),
                   child: const CircleAvatar(
                     radius: 40,
-                    backgroundImage: AssetImage(PngIcons.helperPoster),
                   ),
                 ),
               ),

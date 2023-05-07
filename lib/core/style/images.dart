@@ -5,7 +5,6 @@ abstract class PngIcons {
   static const String welcomeScreen = '$_path/welcome_screen.png';
   static const String phoneNumberScreen = '$_path/phonenumber_screen.png';
   static const String otpScreen = '$_path/otp_screen.png';
-  static const String helperPoster = '$_path/helper_poster.png';
   static const String paymentScreen = '$_path/payment_screen.png';
   static const String cardIcon = '$_path/buscuit_card_icon.png';
   static const String cvvIcon = '$_path/cvv_icon.png';

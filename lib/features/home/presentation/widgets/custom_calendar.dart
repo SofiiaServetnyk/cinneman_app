@@ -1,12 +1,15 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/data/models/movies.dart';
 import 'package:cinneman/data/models/session_models.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
+import 'package:cinneman/navigation/app_routes.dart';
 import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -31,6 +34,8 @@ class CustomCalendar extends StatefulWidget {
 class _CustomCalendarState extends State<CustomCalendar> {
   bool loading = true;
   List<MovieSession> sessions = [];
+  MovieSession? selectedSession;
+
   DateTime focusedDay = DateTime.now();
 
   @override
@@ -123,14 +128,29 @@ class _CustomCalendarState extends State<CustomCalendar> {
                   itemCount: sessions.length,
                   itemBuilder: (BuildContext context, int index) {
                     return SessionSelectionButton(
-                        sessionTime:
-                            DateFormat('HH:mm').format(sessions[index].date));
+                      sessionTime:
+                          DateFormat('HH:mm').format(sessions[index].date),
+                      selected: selectedSession != null &&
+                          selectedSession == sessions[index],
+                      onTap: () {
+                        setState(() {
+                          selectedSession = sessions[index];
+                        });
+                      },
+                    );
                   }),
         ),
       ),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: CustomButton(onPressed: () {}, child: const Text('Seats')),
+        child: CustomButton(
+            onPressed: () {
+              if (selectedSession != null) {
+                BlocProvider.of<NavigationCubit>(context).push(RouteConfig(
+                    route: AppRoutes.seatSelectPage, args: selectedSession));
+              }
+            },
+            child: const Text('Select Seats')),
       ),
       SizedBox(height: SizedBoxSize.sbs25)
     ]);

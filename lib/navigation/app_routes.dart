@@ -1,7 +1,9 @@
+import 'package:cinneman/data/models/session_models.dart';
 import 'package:cinneman/pages/login_screen.dart';
 import 'package:cinneman/pages/movie_details.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:cinneman/pages/otp_screen.dart';
+import 'package:cinneman/pages/session_seleciton.dart';
 import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/user_screen.dart';
 import 'package:cinneman/pages/welcome_screen.dart';
@@ -53,6 +55,13 @@ class PageGenerator {
         return MaterialPage(
             child: MovieDetailsPage(movieId: movieId),
             key: ValueKey(AppRoutes.movieDetailsPage));
+
+      case AppRoutes.seatSelectPage:
+        var session = config.args as MovieSession;
+
+        return MaterialPage(
+            child: SeatSelectionPage(session: session),
+            key: ValueKey(AppRoutes.seatSelectPage));
 
       case AppRoutes.userProfile:
         return MaterialPage(
