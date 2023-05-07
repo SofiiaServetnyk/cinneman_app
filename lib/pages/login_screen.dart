@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
 
                             if (authCubit.state.phoneNumber != null) {
                               navigationCubit
-                                  .goToPage(RoutePath(route: AppRoutes.otp));
+                                  .goToPage(RouteConfig(route: AppRoutes.otp));
                             }
                           },
                           child: Text('Send', style: nunito.s18.yellow1))

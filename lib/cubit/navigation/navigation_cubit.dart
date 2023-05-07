@@ -9,8 +9,7 @@ class NavigationCubit extends Cubit<NavigationState> {
   //     : super(NavigationState(routePath: RoutePath(route: AppRoutes.splash)));
 
   NavigationCubit(this.authCubit)
-      : super(
-            NavigationState(routePaths: [RoutePath(route: AppRoutes.splash)])) {
+      : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)])) {
     Future.delayed(const Duration(seconds: 2)).then((_) {
       if (authCubit.state.isAuthenticated) {
         startAuthenticated();
@@ -21,14 +20,14 @@ class NavigationCubit extends Cubit<NavigationState> {
   }
 
   void startAnonymous() {
-    goToPage(RoutePath(route: AppRoutes.welcomeScreen));
+    goToPage(RouteConfig(route: AppRoutes.welcomeScreen));
   }
 
   void startAuthenticated() {
-    goToPage(RoutePath(route: AppRoutes.moviesListPage));
+    goToPage(RouteConfig(route: AppRoutes.moviesListPage));
   }
 
-  void push(RoutePath routePath) {
+  void push(RouteConfig routePath) {
     emit(state.push(routePath));
   }
 
@@ -36,7 +35,7 @@ class NavigationCubit extends Cubit<NavigationState> {
     emit(state.pop());
   }
 
-  void goToPage(RoutePath routePath) {
+  void goToPage(RouteConfig routePath) {
     emit(state.clearAndPush(routePath));
   }
 }

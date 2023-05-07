@@ -28,7 +28,7 @@ class MoviesListPage extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               navigationCubit.push(
-                                  RoutePath(route: AppRoutes.userProfile));
+                                  RouteConfig(route: AppRoutes.userProfile));
                             },
                             child: Image.asset(
                               PngIcons.cinnemanIcon,
@@ -52,7 +52,7 @@ class MoviesListPage extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                navigationCubit.push(RoutePath(
+                                navigationCubit.push(RouteConfig(
                                     route: AppRoutes.movieDetailsPage));
                               },
                               child:
@@ -85,7 +85,8 @@ class MyAppBar extends StatelessWidget {
               Text(title ?? ''),
               GestureDetector(
                 onTap: () {
-                  navigationCubit.push(RoutePath(route: AppRoutes.userProfile));
+                  navigationCubit
+                      .push(RouteConfig(route: AppRoutes.userProfile));
                 },
                 child: Image.asset(
                   PngIcons.cinnemanIcon,

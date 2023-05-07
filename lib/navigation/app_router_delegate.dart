@@ -1,11 +1,10 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_routes.dart';
-import 'package:cinneman/pages/login_screen.dart';
 import 'package:flutter/material.dart';
 
-class AppRouterDelegate extends RouterDelegate<RoutePath>
-    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RoutePath> {
+class AppRouterDelegate extends RouterDelegate<RouteConfig>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteConfig> {
   GlobalKey<NavigatorState> navigatorKey;
 
   final AuthCubit _authCubit;
@@ -37,7 +36,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
         .map((r) => _pageFactory.createPage(r))
         .toList();
 
-    pages.add(MaterialPage(child: LoginPage()));
+    // pages.add(MaterialPage(child: SeatSelectionPage()));
 
     return Navigator(
       key: navigatorKey,
@@ -55,7 +54,7 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
   }
 
   @override
-  Future<void> setNewRoutePath(RoutePath routePath) async {
+  Future<void> setNewRoutePath(RouteConfig config) async {
     // Check if the requested page key requires authentication
     bool requiresAuth = [
       AppRoutes.moviesListPage,
@@ -63,12 +62,12 @@ class AppRouterDelegate extends RouterDelegate<RoutePath>
       AppRoutes.checkoutPage,
       AppRoutes.userProfile,
       AppRoutes.userTickets,
-    ].contains(routePath.route);
+    ].contains(config.route);
 
     if (requiresAuth && !isAuthenticated) {
-      _navigationCubit.goToPage(RoutePath(route: AppRoutes.login));
+      _navigationCubit.goToPage(RouteConfig(route: AppRoutes.login));
     } else {
-      _navigationCubit.goToPage(routePath);
+      _navigationCubit.goToPage(config);
     }
   }
 }

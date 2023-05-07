@@ -1,6 +1,5 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
-import 'package:cinneman/navigation/app_route_information_parser.dart';
 import 'package:cinneman/navigation/app_router_delegate.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +26,11 @@ class MyApp extends StatelessWidget {
     final NavigationCubit navigationCubit = NavigationCubit(authCubit);
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => authCubit),
-        BlocProvider(create: (_) => navigationCubit),
-      ],
-      child: MaterialApp.router(
+        providers: [
+          BlocProvider(create: (_) => authCubit),
+          BlocProvider(create: (_) => navigationCubit),
+        ],
+        child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
@@ -41,8 +40,8 @@ class MyApp extends StatelessWidget {
               authCubit: authCubit,
               navigationCubit: navigationCubit,
               pageFactory: PageFactory()),
-          routeInformationParser:
-              AppRouteInformationParser(authCubit: authCubit)),
-    );
+          //       routeInformationParser:
+          //           AppRouteInformationParser(authCubit: authCubit)),
+        ));
   }
 }

@@ -51,7 +51,7 @@ class WelcomePage extends StatelessWidget {
                     CustomButton(
                         onPressed: () {
                           navigationCubit
-                              .goToPage(RoutePath(route: AppRoutes.login));
+                              .goToPage(RouteConfig(route: AppRoutes.login));
                         },
                         child: Text('Log in, I am gourmet',
                             style: nunito.s18.white)),

@@ -1,15 +1,14 @@
 import 'package:cinneman/navigation/app_routes.dart';
 
 class NavigationState {
-  final List<RoutePath> _stack;
+  final List<RouteConfig> _stack;
+  List<RouteConfig> get stack => _stack;
 
-  List<RoutePath> get stack => _stack;
+  NavigationState({required List<RouteConfig> stack}) : _stack = stack;
 
-  NavigationState({required List<RoutePath> routePaths}) : _stack = routePaths;
-
-  void clear() {
-    _stack.removeRange(0, _stack.length - 2);
-  }
+  // void clear() {
+  //   _stack.removeRange(0, _stack.length - 2);
+  // }
 
   bool canPop() {
     return _stack.length > 1;
@@ -17,43 +16,43 @@ class NavigationState {
 
   NavigationState pop() {
     if (canPop()) _stack.remove(_stack.last);
-    return NavigationState(routePaths: _stack);
+    return NavigationState(stack: _stack);
   }
 
-  NavigationState pushBeneathCurrent(RoutePath routePath) {
-    _stack.insert(_stack.length - 1, routePath);
-    return NavigationState(routePaths: _stack);
+  NavigationState pushBeneathCurrent(RouteConfig config) {
+    _stack.insert(_stack.length - 1, config);
+    return NavigationState(stack: _stack);
   }
 
-  NavigationState push(RoutePath routePath) {
-    if (_stack.last != routePath) _stack.add(routePath);
+  NavigationState push(RouteConfig config) {
+    if (_stack.last != config) _stack.add(config);
 
-    return NavigationState(routePaths: _stack);
+    return NavigationState(stack: _stack);
   }
 
-  NavigationState replace(RoutePath routePath) {
+  NavigationState replace(RouteConfig config) {
     if (canPop()) {
       _stack.removeLast();
-      push(routePath);
+      push(config);
     } else {
-      _stack.insert(0, routePath);
+      _stack.insert(0, config);
       _stack.removeLast();
     }
 
-    return NavigationState(routePaths: _stack);
+    return NavigationState(stack: _stack);
   }
 
-  NavigationState clearAndPush(RoutePath routePath) {
+  NavigationState clearAndPush(RouteConfig config) {
     _stack.clear();
-    _stack.add(routePath);
+    _stack.add(config);
 
-    return NavigationState(routePaths: _stack);
+    return NavigationState(stack: _stack);
   }
 
-  NavigationState clearAndPushAll(List<RoutePath> routePaths) {
+  NavigationState clearAndPushAll(List<RouteConfig> configs) {
     _stack.clear();
-    _stack.addAll(routePaths);
+    _stack.addAll(configs);
 
-    return NavigationState(routePaths: _stack);
+    return NavigationState(stack: _stack);
   }
 }

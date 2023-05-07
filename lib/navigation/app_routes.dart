@@ -23,16 +23,16 @@ enum AppRoutes {
   userTickets,
 }
 
-class RoutePath {
+class RouteConfig {
   final AppRoutes? route;
   final Object? args;
 
-  RoutePath({this.route, this.args});
+  RouteConfig({this.route, this.args});
 }
 
 class PageFactory {
-  MaterialPage createPage(RoutePath routePath) {
-    switch (routePath.route) {
+  MaterialPage createPage(RouteConfig config) {
+    switch (config.route) {
       case AppRoutes.welcomeScreen:
         return MaterialPage(
             child: WelcomePage(), key: ValueKey(AppRoutes.welcomeScreen));
