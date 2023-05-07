@@ -2,17 +2,24 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/data/models/movies.dart';
+import 'package:cinneman/data/models/session_models.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
+import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
   Movie movie;
+  DateTime firstDay;
   DateTime lastDay;
 
-  CustomCalendar({Key? key, required this.movie, DateTime? lastDay})
-      : this.lastDay = lastDay ??
+  CustomCalendar(
+      {Key? key, required this.movie, DateTime? firstDay, DateTime? lastDay})
+      : this.firstDay = firstDay ?? DateTime.now(),
+        this.lastDay = lastDay ??
             DateTime(DateTime.now().year, DateTime.now().month + 3, 0,
                 DateTime.now().day),
         super(key: key);
@@ -22,18 +29,39 @@ class CustomCalendar extends StatefulWidget {
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
+  List<MovieSession> sessions = [];
   DateTime focusedDay = DateTime.now();
-
-  void onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      this.focusedDay = day;
-    });
-  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    initializeData();
+  }
+
+  void initializeData() async {
+    var sessions = await loadSessions(widget.firstDay);
+
+    setState(() {
+      this.sessions = sessions;
+    });
+  }
+
+  Future<List<MovieSession>> loadSessions(DateTime day) async {
+    var movieService = Provider.of<MovieService>(context, listen: false);
+    var sessions = await movieService.getMovieSessions(
+        movieId: widget.movie.id, date: day);
+    sessions.sort((a, b) => a.date.compareTo(b.date));
+
+    return sessions;
+  }
+
+  void onDaySelected(DateTime day, DateTime focusedDay) async {
+    List<MovieSession> sessions = await loadSessions(day);
+
+    setState(() {
+      this.focusedDay = day;
+      this.sessions = sessions;
+    });
   }
 
   @override
@@ -81,9 +109,11 @@ class _CustomCalendarState extends State<CustomCalendar> {
           height: 50,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: sessions.length,
               itemBuilder: (BuildContext context, int index) {
-                return SessionSelectionButton();
+                return SessionSelectionButton(
+                    sessionTime:
+                        DateFormat('HH:mm').format(sessions[index].date));
               }),
         ),
       ),

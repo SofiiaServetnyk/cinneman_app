@@ -6,7 +6,7 @@ enum SeatType {
 
 class MovieSession {
   int id;
-  int date;
+  DateTime date;
   String type;
   int minPrice;
   Room room;
@@ -21,7 +21,7 @@ class MovieSession {
 
   factory MovieSession.fromJson(Map<String, dynamic> json) => MovieSession(
         id: json['id'],
-        date: json['date'],
+        date: DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000),
         type: json['type'],
         minPrice: json['minPrice'],
         room: Room.fromJson(json['room']),

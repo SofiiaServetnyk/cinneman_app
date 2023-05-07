@@ -3,10 +3,12 @@ import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_router_delegate.dart';
 import 'package:cinneman/navigation/app_routes.dart';
+import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -36,17 +38,15 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => authCubit),
           BlocProvider(create: (_) => navigationCubit),
           BlocProvider(create: (_) => moviesCubit),
+          Provider<MovieService>(create: (_) => MovieService(authCubit)),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Cinneman',
-
           routerDelegate: CinnemanRouterDelegate(
               authCubit: authCubit,
               navigationCubit: navigationCubit,
               pageGenerator: PageGenerator()),
-          //       routeInformationParser:
-          //           AppRouteInformationParser(authCubit: authCubit)),
         ));
   }
 }

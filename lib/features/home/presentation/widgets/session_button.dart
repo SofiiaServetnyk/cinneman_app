@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../../../../core/style/paddings_and_consts.dart';
 
 class SessionSelectionButton extends StatefulWidget {
-  SessionSelectionButton({Key? key}) : super(key: key);
+  String sessionTime;
+  SessionSelectionButton({Key? key, required this.sessionTime})
+      : super(key: key);
 
   @override
   State<SessionSelectionButton> createState() => _SessionSelectionButtonState();
@@ -30,8 +32,10 @@ class _SessionSelectionButtonState extends State<SessionSelectionButton> {
         decoration: BoxDecoration(
             color: isTapped ? Colors.blue : Colors.green,
             borderRadius: BorderRadius.circular(CustomBorderRadius.br)),
-        child: Text('11:00',
-            textAlign: TextAlign.center, style: nunito.w500.s18.white),
+        child: Center(
+          child: Text(widget.sessionTime,
+              textAlign: TextAlign.center, style: nunito.w500.s18.white),
+        ),
       ),
     );
   }
