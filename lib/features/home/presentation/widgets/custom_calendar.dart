@@ -56,10 +56,10 @@ class _CustomCalendarState extends State<CustomCalendar> {
                 color: CustomColors.yellow2,
                 shape: BoxShape.circle,
               ),
-              outsideTextStyle: nunito,
+              outsideTextStyle: nunito.grey,
               todayDecoration: BoxDecoration(
                   color: CustomColors.yellow1, shape: BoxShape.circle),
-              defaultTextStyle: nunito.grey,
+              defaultTextStyle: nunito,
               disabledTextStyle: nunito.grey),
           lastDay: widget.lastDay),
       const Divider(),
