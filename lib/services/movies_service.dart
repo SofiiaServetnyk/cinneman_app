@@ -1,5 +1,6 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/data/models/movies.dart';
+import 'package:cinneman/data/models/session_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -39,9 +40,50 @@ class MovieService {
     }
   }
 
-  // Future<Movie?> getMovieById(int id) async {
-  //   final movies = await getMovies();
-  //   final movie = movies.firstWhere((movie) => movie.id == id);
-  //   return movie;
-  // }
+  Future<List<MovieSession>> getMovieSessions(
+      {required int movieId, required DateTime date}) async {
+    try {
+      final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      final response = await _dio.get(
+        '$apiUrl/api/movies/sessions',
+        queryParameters: {
+          'movieId': movieId,
+          'date': formattedDate,
+        },
+        options: Options(headers: {
+          'Authorization': 'Bearer ${authCubit.state.accessToken}',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final List<MovieSession> sessions = (response.data['data'] as List)
+            .map((json) => MovieSession.fromJson(json))
+            .toList();
+        return sessions;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<MovieSession?> getMovieSessionById(int sessionId) async {
+    try {
+      final response = await _dio.get(
+        '$apiUrl/api/movies/sessions/$sessionId',
+        options: Options(headers: {
+          'Authorization': 'Bearer ${authCubit.state.accessToken}',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return MovieSession.fromJson(response.data['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

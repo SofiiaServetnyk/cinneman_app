@@ -1,28 +1,39 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/data/models/movies.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomCalendar extends StatefulWidget {
-  CustomCalendar({Key? key}) : super(key: key);
+  Movie movie;
+  DateTime lastDay;
+
+  CustomCalendar({Key? key, required this.movie, DateTime? lastDay})
+      : this.lastDay = lastDay ??
+            DateTime(DateTime.now().year, DateTime.now().month + 3, 0,
+                DateTime.now().day),
+        super(key: key);
 
   @override
   State<CustomCalendar> createState() => _CustomCalendarState();
 }
 
 class _CustomCalendarState extends State<CustomCalendar> {
-  DateTime today = DateTime.now();
-
-  DateTime lastDay = DateTime(
-      DateTime.now().year, DateTime.now().month + 3, 0, DateTime.now().day);
+  DateTime focusedDay = DateTime.now();
 
   void onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
-      today = day;
+      this.focusedDay = day;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -31,15 +42,15 @@ class _CustomCalendarState extends State<CustomCalendar> {
       TableCalendar(
           rowHeight: 40,
           startingDayOfWeek: StartingDayOfWeek.monday,
-          selectedDayPredicate: (day) => isSameDay(day, today),
+          selectedDayPredicate: (day) => isSameDay(day, focusedDay),
           availableGestures: AvailableGestures.all,
           onDaySelected: onDaySelected,
           headerStyle: const HeaderStyle(
             formatButtonVisible: false,
             titleCentered: true,
           ),
-          focusedDay: today,
-          firstDay: today,
+          focusedDay: focusedDay,
+          firstDay: DateTime.now(),
           calendarStyle: CalendarStyle(
               selectedDecoration: BoxDecoration(
                 color: CustomColors.yellow2,
@@ -50,7 +61,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
                   color: CustomColors.yellow1, shape: BoxShape.circle),
               defaultTextStyle: nunito.grey,
               disabledTextStyle: nunito.grey),
-          lastDay: lastDay),
+          lastDay: widget.lastDay),
       const Divider(),
       const SizedBox(height: SizedBoxSize.sbs10),
       Container(child: const Text("Sessions:")),
