@@ -78,29 +78,22 @@ class MovieDetailsPage extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
                                 ),
-                                Icon(Icons.play_arrow,
-                                    color: CustomColors.white),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(movie.year.toString(),
-                                          style: nunito.white),
-                                      const SizedBox(
-                                          height: SizedBoxSize.sbs10),
-                                      Container(
-                                          padding: Paddings.all10,
-                                          decoration: BoxDecoration(
-                                              color: CustomColors.yellow1,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      CustomBorderRadius.br)),
-                                          child: Text(
-                                              movie.duration.toString() +
-                                                  ' min',
-                                              style: nunito.white)),
-                                    ],
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(movie.year.toString(),
+                                        style: nunito.white),
+                                    const SizedBox(height: SizedBoxSize.sbs10),
+                                    Container(
+                                        padding: Paddings.all10,
+                                        decoration: BoxDecoration(
+                                            color: CustomColors.yellow1,
+                                            borderRadius: BorderRadius.circular(
+                                                CustomBorderRadius.br)),
+                                        child: Text(
+                                            movie.duration.toString() + ' min',
+                                            style: nunito.white)),
+                                  ],
                                 )
                               ],
                             ),
