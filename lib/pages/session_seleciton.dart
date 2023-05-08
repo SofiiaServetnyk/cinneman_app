@@ -2,19 +2,22 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/data/models/session_models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeatSelectionPage extends StatelessWidget {
-  final TransformationController _transformationController =
-      TransformationController();
   MovieSession session;
 
   SeatSelectionPage({Key? key, required this.session}) : super(key: key);
 
+  final TransformationController _transformationController =
+      TransformationController();
+
   Widget build(BuildContext context) {
     // Set initial scale value (e.g., 0.5 for half the size)
-    double initialScale = 0.75;
+    double initialScale = 0.85;
     _transformationController.value = Matrix4.identity()..scale(initialScale);
 
     return Scaffold(
@@ -100,13 +103,30 @@ class SeatGridRow extends StatelessWidget {
     return Wrap(
       children: [
         RowNumberContainer(numberOfRows: row.index),
-        Wrap(
-          direction: Axis.horizontal,
-          children: [
-            ...List.generate(row.seats.length,
-                (index) => SeatContainer(seat: row.seats[index]))
-          ],
-        )
+        BlocBuilder<MoviesCubit, MoviesState>(builder: (context, state) {
+          return Wrap(
+            direction: Axis.horizontal,
+            children: [
+              ...List.generate(
+                  row.seats.length,
+                  (index) => SeatContainer(
+                      index: index,
+                      type: row.seats[index].type,
+                      available: row.seats[index].isAvailable,
+                      onTap: () {
+                        if (row.seats[index].isAvailable ||
+                            state.selectedSeats?.contains(row.seats[index]) ==
+                                true) {
+                          BlocProvider.of<MoviesCubit>(context)
+                              .toggleSeat(row.seats[index]);
+                        }
+                      },
+                      selected:
+                          state.selectedSeats?.contains(row.seats[index]) ??
+                              false))
+            ],
+          );
+        })
       ],
     );
   }
@@ -132,14 +152,26 @@ class RowNumberContainer extends StatelessWidget {
 }
 
 class SeatContainer extends StatelessWidget {
-  Seat seat;
+  int index;
+  SeatType type = SeatType.NORMAL;
+  bool available;
+  bool selected = false;
+  Function()? onTap;
 
-  SeatContainer({Key? key, required this.seat}) : super(key: key);
+  SeatContainer(
+      {Key? key,
+      required this.index,
+      required this.type,
+      required this.available,
+      this.onTap,
+      bool? selected})
+      : selected = selected ?? false,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Color seatColor;
-    switch (seat.type) {
+    switch (type) {
       case SeatType.VIP:
         seatColor = Colors.red;
         break;
@@ -152,44 +184,51 @@ class SeatContainer extends StatelessWidget {
         seatColor = Colors.yellow;
     }
 
-    return Container(
-      width: 36,
-      margin: const EdgeInsets.all(5),
-      child: Center(
-          child: Wrap(
-        alignment: WrapAlignment.center,
-        direction: Axis.vertical,
-        children: [
-          Container(
-            width: 36,
-            decoration: BoxDecoration(
-              color: seatColor,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.black,
-                width: 1.0,
+    if (selected) {
+      seatColor = Colors.white;
+    }
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 38,
+        margin: const EdgeInsets.all(5),
+        child: Center(
+            child: Wrap(
+          alignment: WrapAlignment.center,
+          direction: Axis.vertical,
+          children: [
+            Container(
+              width: 38,
+              decoration: BoxDecoration(
+                color: seatColor.withOpacity(available ? 1 : 0.25),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected ? Colors.blue : Colors.black,
+                  width: selected ? 4.0 : 1.0,
+                ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(1),
-              child: ClipOval(
-                child: Image.asset(
-                  fit: BoxFit.contain,
-                  PngIcons.betterSeat,
-                  width: 25,
+              child: Padding(
+                padding: const EdgeInsets.all(1),
+                child: ClipOval(
+                  child: Image.asset(
+                    fit: BoxFit.contain,
+                    PngIcons.betterSeat,
+                    width: 25,
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-              width: 36,
-              child: Center(
-                  child: Text(
-                seat.index.toString(),
-                style: nunito.s12,
-              )))
-        ],
-      )),
+            Container(
+                width: 38,
+                child: Center(
+                    child: Text(
+                  index.toString(),
+                  style: nunito.s12,
+                )))
+          ],
+        )),
+      ),
     );
   }
 }

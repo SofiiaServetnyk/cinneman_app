@@ -61,9 +61,8 @@ class MoviesListPage extends StatelessWidget {
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    navigationCubit.push(RouteConfig(
-                                        route: AppRoutes.movieDetailsPage,
-                                        args: movies[index].id));
+                                    navigationCubit
+                                        .openMovieDetailsPage(movies[index].id);
                                   },
                                   child: MoviePreview(movie: movies[index]),
                                 );

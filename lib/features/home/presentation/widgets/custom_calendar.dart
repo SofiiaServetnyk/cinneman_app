@@ -1,12 +1,12 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/data/models/movies.dart';
 import 'package:cinneman/data/models/session_models.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
-import 'package:cinneman/navigation/app_routes.dart';
 import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -146,8 +146,10 @@ class _CustomCalendarState extends State<CustomCalendar> {
         child: CustomButton(
             onPressed: () {
               if (selectedSession != null) {
-                BlocProvider.of<NavigationCubit>(context).push(RouteConfig(
-                    route: AppRoutes.seatSelectPage, args: selectedSession));
+                BlocProvider.of<MoviesCubit>(context)
+                    .selectSession(selectedSession!);
+                BlocProvider.of<NavigationCubit>(context)
+                    .openMovieSessionPage(selectedSession!);
               }
             },
             child: const Text('Select Seats')),

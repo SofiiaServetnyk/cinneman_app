@@ -1,5 +1,6 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_state.dart';
+import 'package:cinneman/data/models/session_models.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,14 @@ class NavigationCubit extends Cubit<NavigationState> {
 
   void startAuthenticated() {
     goToPage(RouteConfig(route: AppRoutes.moviesListPage));
+  }
+
+  void openMovieDetailsPage(int id) {
+    push(RouteConfig(route: AppRoutes.movieDetailsPage, args: id));
+  }
+
+  void openMovieSessionPage(MovieSession session) {
+    push(RouteConfig(route: AppRoutes.seatSelectPage, args: session));
   }
 
   void push(RouteConfig routePath) {
