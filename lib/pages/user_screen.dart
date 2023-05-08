@@ -2,9 +2,12 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/pages/session_seleciton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -65,7 +68,11 @@ class _UserScreenState extends State<UserScreen> {
               child: TicketContainer(),
             ),
             CustomTextButton(
-                onPressed: () {}, child: Text("Log out", style: nunito)),
+                onPressed: () {
+                  BlocProvider.of<AuthCubit>(context).logoutUser();
+                  BlocProvider.of<NavigationCubit>(context).startUnauthorized();
+                },
+                child: Text("Log out", style: nunito)),
           ],
         )),
       ),
