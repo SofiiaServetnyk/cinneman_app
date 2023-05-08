@@ -6,14 +6,9 @@ import 'package:cinneman/features/authorization/presentation/custom_button.dart'
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
-class PaymentScreen extends StatefulWidget {
+class PaymentScreen extends StatelessWidget {
   const PaymentScreen({Key? key}) : super(key: key);
 
-  @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
-}
-
-class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
