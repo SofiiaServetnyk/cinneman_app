@@ -1,3 +1,4 @@
+import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +18,11 @@ class SessionSelectionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.all(5),
+        margin: const EdgeInsets.all(10),
         // height: 100,        padding: Paddings.all10,
         width: ButtonSize.sessionMinWidth,
         decoration: BoxDecoration(
-            color: selected ? Colors.blue : Colors.green,
+            color: selected ? CustomColors.brown1 : CustomColors.yellow17,
             borderRadius: BorderRadius.circular(CustomBorderRadius.br)),
         child: Center(
           child: Text(sessionTime,

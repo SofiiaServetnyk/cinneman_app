@@ -115,7 +115,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
           lastDay: widget.lastDay),
       const Divider(),
       const SizedBox(height: SizedBoxSize.sbs10),
-      Container(child: Text("Sweet Showtimes:", style: nunito.black)),
+      Container(
+          child: Text(
+        "Sweet Showtimes:".toUpperCase(),
+        style: TextStyle(
+            fontFamily: 'Morganite', fontSize: 28, color: CustomColors.brown3),
+      )),
       const SizedBox(height: SizedBoxSize.sbs10),
       Padding(
         padding: Paddings.all5,
@@ -123,26 +128,30 @@ class _CustomCalendarState extends State<CustomCalendar> {
           height: 50,
           child: loading
               ? Text('Loading...', style: nunito)
-              : ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: sessions.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SessionSelectionButton(
-                      sessionTime:
-                          DateFormat('HH:mm').format(sessions[index].date),
-                      selected: selectedSession != null &&
-                          selectedSession == sessions[index],
-                      onTap: () {
-                        setState(() {
-                          selectedSession = sessions[index];
-                        });
-                      },
-                    );
-                  }),
+              : Center(
+                  child: Container(
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: sessions.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return SessionSelectionButton(
+                            sessionTime: DateFormat('HH:mm')
+                                .format(sessions[index].date),
+                            selected: selectedSession != null &&
+                                selectedSession == sessions[index],
+                            onTap: () {
+                              setState(() {
+                                selectedSession = sessions[index];
+                              });
+                            },
+                          );
+                        }),
+                  ),
+                ),
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: CustomButton(
             onPressed: () {
               if (selectedSession != null) {
@@ -152,9 +161,9 @@ class _CustomCalendarState extends State<CustomCalendar> {
                     .openMovieSessionPage(selectedSession!);
               }
             },
-            child: const Text('Select Seats')),
+            child: Text('Select Seats', style: nunito.white)),
       ),
-      SizedBox(height: SizedBoxSize.sbs25)
+      const SizedBox(height: SizedBoxSize.sbs25)
     ]);
   }
 }
