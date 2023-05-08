@@ -130,7 +130,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
       ),
       Padding(
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: CustomButton(onPressed: () {}, child: const Text('test')),
+        child: CustomButton(onPressed: () {}, child: const Text('Seats')),
       ),
       SizedBox(height: SizedBoxSize.sbs25)
     ]);

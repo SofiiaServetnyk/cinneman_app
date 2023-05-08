@@ -8,18 +8,28 @@ import 'package:cinneman/features/home/presentation/widgets/movie_detail_row.dar
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   int movieId;
 
   MovieDetailsPage({Key? key, required this.movieId}) : super(key: key);
 
+  Future<void> _launchUrl(url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesCubit, MoviesState>(
       builder: (context, state) {
         var movie = state.movies[movieId]!;
-
+        String trailer = movie.trailer;
+        Uri uriMovie = Uri.parse(trailer);
         return Scaffold(
           backgroundColor: CustomColors.white,
           body: Container(
@@ -30,60 +40,75 @@ class MovieDetailsPage extends StatelessWidget {
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(CustomBorderRadius.br),
                   ),
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(movie.image),
-                                fit: BoxFit.cover)),
-                      ),
-                      Positioned.fill(
-                        child: Container(
+                  child: GestureDetector(
+                    onTap: () => _launchUrl(uriMovie),
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 300,
                           decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
-                                  colors: [
-                                CustomColors.brown1,
-                                Colors.transparent
-                              ])),
+                              image: DecorationImage(
+                                  image: NetworkImage(movie.image),
+                                  fit: BoxFit.cover)),
                         ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Padding(
-                          padding: Paddings.all10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(movie.name, style: nunito.white.w800.s24),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(movie.year.toString(),
-                                      style: nunito.white),
-                                  const SizedBox(height: SizedBoxSize.sbs10),
-                                  Container(
-                                      padding: Paddings.all10,
-                                      decoration: BoxDecoration(
-                                          color: CustomColors.yellow1,
-                                          borderRadius: BorderRadius.circular(
-                                              CustomBorderRadius.br)),
-                                      child: Text(
-                                          movie.duration.toString() + ' min',
-                                          style: nunito.white)),
-                                ],
-                              )
-                            ],
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                  CustomColors.brown1,
+                                  Colors.transparent
+                                ])),
                           ),
                         ),
-                      ),
-                      MyAppBar(color: Colors.transparent),
-                    ],
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Padding(
+                            padding: Paddings.all10,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  movie.name,
+                                  style: nunito.white.w800.s24,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.fade,
+                                ),
+                                Icon(Icons.play_arrow,
+                                    color: CustomColors.white),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(movie.year.toString(),
+                                          style: nunito.white),
+                                      const SizedBox(
+                                          height: SizedBoxSize.sbs10),
+                                      Container(
+                                          padding: Paddings.all10,
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.yellow1,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      CustomBorderRadius.br)),
+                                          child: Text(
+                                              movie.duration.toString() +
+                                                  ' min',
+                                              style: nunito.white)),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        MyAppBar(color: Colors.transparent),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
