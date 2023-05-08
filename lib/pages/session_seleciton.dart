@@ -2,33 +2,21 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
-import 'package:cinneman/data/models/fake_session.dart';
 import 'package:cinneman/data/models/session_models.dart';
 import 'package:flutter/material.dart';
 
-class SeatSelectionPage extends StatefulWidget {
+class SeatSelectionPage extends StatelessWidget {
+  final TransformationController _transformationController =
+      TransformationController();
   MovieSession session;
-
-  MyRow myRow = MyRow();
-  int? numberOfRows = 6;
-  int? numberOfSeats;
 
   SeatSelectionPage({Key? key, required this.session}) : super(key: key);
 
-  @override
-  State<SeatSelectionPage> createState() => _SeatSelectionPageState();
-}
-
-class _SeatSelectionPageState extends State<SeatSelectionPage> {
-  int? numberOfSeats;
-
-  @override
-  void initState() {
-    super.initState();
-    numberOfSeats = widget.myRow.getNumberOfSeats();
-  }
-
   Widget build(BuildContext context) {
+    // Set initial scale value (e.g., 0.5 for half the size)
+    double initialScale = 0.75;
+    _transformationController.value = Matrix4.identity()..scale(initialScale);
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(5.0),
@@ -74,66 +62,21 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                       Container(
                         color: Color.fromRGBO(0, 0, 0, 0.25),
                         child: SizedBox(
-                          height: 300,
+                          height: 400,
                           child: InteractiveViewer(
                             constrained: false,
                             scaleEnabled: true,
                             boundaryMargin: EdgeInsets.all(double.infinity),
-                            alignment: Alignment.center,
+                            alignment: Alignment.topCenter,
+                            transformationController: _transformationController,
                             minScale: 0.2,
-                            maxScale: 2,
+                            maxScale: 4,
                             child: Column(
-                              children: [
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                                SeatGrid(
-                                  numberOfSeats: 16,
-                                  numberOfRows: widget.numberOfRows!,
-                                ),
-                              ],
-                            ),
+                                children: List.generate(
+                                    session.room.rows.length,
+                                    (index) => SeatGridRow(
+                                          row: session.room.rows[index],
+                                        ))),
                           ),
                         ),
                       ),
@@ -147,26 +90,21 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
   }
 }
 
-class SeatGrid extends StatelessWidget {
-  int numberOfRows;
-  int numberOfSeats;
+class SeatGridRow extends StatelessWidget {
+  SeatRow row;
 
-  SeatGrid({Key? key, required this.numberOfRows, required this.numberOfSeats})
-      : super(key: key);
+  SeatGridRow({Key? key, required this.row}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        RowNumberContainer(numberOfRows: 7),
+        RowNumberContainer(numberOfRows: row.index),
         Wrap(
           direction: Axis.horizontal,
           children: [
-            ...List.generate(
-                numberOfSeats,
-                (index) => SeatContainer(
-                      SeatType: 0,
-                    ))
+            ...List.generate(row.seats.length,
+                (index) => SeatContainer(seat: row.seats[index]))
           ],
         )
       ],
@@ -193,27 +131,39 @@ class RowNumberContainer extends StatelessWidget {
   }
 }
 
-class SeatContainer extends StatefulWidget {
-  SeatContainer({Key? key, required this.SeatType}) : super(key: key);
-  int SeatType;
+class SeatContainer extends StatelessWidget {
+  Seat seat;
 
-  @override
-  State<SeatContainer> createState() => _SeatContainerState();
-}
+  SeatContainer({Key? key, required this.seat}) : super(key: key);
 
-class _SeatContainerState extends State<SeatContainer> {
   @override
   Widget build(BuildContext context) {
+    Color seatColor;
+    switch (seat.type) {
+      case SeatType.VIP:
+        seatColor = Colors.red;
+        break;
+
+      case SeatType.BETTER:
+        seatColor = Colors.orange;
+        break;
+
+      default:
+        seatColor = Colors.yellow;
+    }
+
     return Container(
-      width: 25,
+      width: 36,
       margin: const EdgeInsets.all(5),
       child: Center(
           child: Wrap(
+        alignment: WrapAlignment.center,
         direction: Axis.vertical,
         children: [
           Container(
+            width: 36,
             decoration: BoxDecoration(
-              color: Colors.yellow,
+              color: seatColor,
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.black,
@@ -231,6 +181,13 @@ class _SeatContainerState extends State<SeatContainer> {
               ),
             ),
           ),
+          Container(
+              width: 36,
+              child: Center(
+                  child: Text(
+                seat.index.toString(),
+                style: nunito.s12,
+              )))
         ],
       )),
     );
