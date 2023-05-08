@@ -3,6 +3,7 @@ import 'package:cinneman/pages/login_screen.dart';
 import 'package:cinneman/pages/movie_details.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:cinneman/pages/otp_screen.dart';
+import 'package:cinneman/pages/payment_screen.dart';
 import 'package:cinneman/pages/session_seleciton.dart';
 import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/user_screen.dart';
@@ -62,6 +63,10 @@ class PageGenerator {
         return MaterialPage(
             child: SeatSelectionPage(session: session),
             key: ValueKey(AppRoutes.seatSelectPage));
+
+      case AppRoutes.checkoutPage:
+        return MaterialPage(
+            child: PaymentScreen(), key: ValueKey(AppRoutes.checkoutPage));
 
       case AppRoutes.userProfile:
         return MaterialPage(

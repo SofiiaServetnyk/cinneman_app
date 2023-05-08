@@ -58,8 +58,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
     });
 
     var movieService = Provider.of<MovieService>(context, listen: false);
-    var sessions = await movieService.getMovieSessions(
-        movieId: widget.movie.id, date: day);
+    var sessions =
+        await movieService.getMovieSessions(movie: widget.movie, date: day);
     sessions.sort((a, b) => a.date.compareTo(b.date));
 
     setState(() {

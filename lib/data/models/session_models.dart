@@ -1,3 +1,5 @@
+import 'package:cinneman/data/models/movies.dart';
+
 enum SeatType {
   NORMAL,
   BETTER,
@@ -6,6 +8,7 @@ enum SeatType {
 
 class MovieSession {
   int id;
+  Movie movie;
   DateTime date;
   String type;
   int minPrice;
@@ -13,14 +16,17 @@ class MovieSession {
 
   MovieSession({
     required this.id,
+    required this.movie,
     required this.date,
     required this.type,
     required this.minPrice,
     required this.room,
   });
 
-  factory MovieSession.fromJson(Map<String, dynamic> json) => MovieSession(
+  factory MovieSession.fromJson(Map<String, dynamic> json, Movie movie) =>
+      MovieSession(
         id: json['id'],
+        movie: movie,
         date: DateTime.fromMillisecondsSinceEpoch(json['date'] * 1000),
         type: json['type'],
         minPrice: json['minPrice'],
@@ -58,17 +64,23 @@ class SeatRow {
     required this.seats,
   });
 
-  factory SeatRow.fromJson(Map<String, dynamic> json) => SeatRow(
-        id: json['id'],
-        index: json['index'],
-        seats:
-            (json['seats'] as List).map((seat) => Seat.fromJson(seat)).toList(),
-      );
+  factory SeatRow.fromJson(Map<String, dynamic> json) {
+    int rowIndex = json['index'];
+
+    return SeatRow(
+      id: json['id'],
+      index: rowIndex,
+      seats: (json['seats'] as List)
+          .map((seat) => Seat.fromJson(seat, rowIndex))
+          .toList(),
+    );
+  }
 }
 
 class Seat {
   int id;
   int index;
+  int rowIndex;
   SeatType type;
   int price;
   bool isAvailable;
@@ -76,14 +88,16 @@ class Seat {
   Seat({
     required this.id,
     required this.index,
+    required this.rowIndex,
     required this.type,
     required this.price,
     required this.isAvailable,
   });
 
-  factory Seat.fromJson(Map<String, dynamic> json) => Seat(
+  factory Seat.fromJson(Map<String, dynamic> json, int rowIndex) => Seat(
         id: json['id'],
         index: json['index'],
+        rowIndex: rowIndex,
         type: SeatType.values[json['type']],
         price: json['price'],
         isAvailable: json['isAvailable'],

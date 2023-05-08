@@ -3,9 +3,15 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
+import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
+import 'package:cinneman/data/models/movies.dart';
 import 'package:cinneman/data/models/session_models.dart';
+import 'package:cinneman/features/authorization/presentation/custom_button.dart';
+import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class SeatSelectionPage extends StatelessWidget {
   MovieSession session;
@@ -37,59 +43,169 @@ class SeatSelectionPage extends StatelessWidget {
             ),
           ),
         ),
-        body: Stack(
-          children: [
-            Center(
-              child: Image.asset(
-                PngIcons.seatSelection,
-                fit: BoxFit.cover,
+        body: BlocBuilder<MoviesCubit, MoviesState>(builder: (context, state) {
+          int totalPrice = 0;
+          Movie movie = state.movieSession!.movie;
+          String movieDate = DateFormat("d MMMM, HH:mm").format(session.date);
+
+          if (state.selectedSeats != null) {
+            for (var s in state.selectedSeats!) {
+              totalPrice += s.price;
+            }
+          }
+
+          return Stack(
+            children: [
+              Center(
+                child: Image.asset(
+                  PngIcons.seatSelection,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            Container(
-              color: CustomColors.white.withOpacity(0.9),
-              child: Padding(
-                padding: Paddings.all15,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MovieBanner(),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizedBoxSize.sbs20,
-                      ),
-                      Container(
-                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                        child: SizedBox(
-                          height: 400,
-                          child: InteractiveViewer(
-                            constrained: false,
-                            scaleEnabled: true,
-                            boundaryMargin: EdgeInsets.all(double.infinity),
-                            alignment: Alignment.topCenter,
-                            transformationController: _transformationController,
-                            minScale: 0.2,
-                            maxScale: 4,
-                            child: Column(
-                                children: List.generate(
-                                    session.room.rows.length,
-                                    (index) => SeatGridRow(
-                                          row: session.room.rows[index],
-                                        ))),
+              Container(
+                color: CustomColors.white.withOpacity(0.9),
+                child: Padding(
+                  padding: Paddings.all15,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MovieBanner(
+                              title: movie.name,
+                              duration: movie.duration,
+                              date: movieDate,
+                              imageSrc: movie.image,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: SizedBoxSize.sbs20,
+                        ),
+                        Container(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          child: SizedBox(
+                            height: 300,
+                            child: InteractiveViewer(
+                              constrained: false,
+                              scaleEnabled: true,
+                              boundaryMargin: EdgeInsets.all(double.infinity),
+                              alignment: Alignment.topCenter,
+                              transformationController:
+                                  _transformationController,
+                              minScale: 0.2,
+                              maxScale: 4,
+                              child: Column(
+                                  children: List.generate(
+                                      session.room.rows.length,
+                                      (index) => SeatGridRow(
+                                            row: session.room.rows[index],
+                                          ))),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            )
-          ],
-        ));
+              Visibility(
+                  visible: (state.selectedSeats?.length ?? 0) > 0,
+                  child: Positioned(
+                    left: 20,
+                    right: 20,
+                    bottom: 40,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 150,
+                          child: ListView.builder(
+                            itemCount: state.selectedSeats?.length,
+                            itemBuilder: (context, index) {
+                              Seat seat = state.selectedSeats!.elementAt(index);
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        style:
+                                            DefaultTextStyle.of(context).style,
+                                        children: [
+                                          TextSpan(
+                                            text: 'Row: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          TextSpan(text: '${seat.rowIndex}  '),
+                                          TextSpan(
+                                            text: 'Seat: ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          TextSpan(text: '${seat.index}'),
+                                        ],
+                                      ),
+                                    ),
+                                    Text('${seat.price} UAH'),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          child: RichText(
+                            text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: [
+                                TextSpan(
+                                  text: 'Total price: ',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: '$totalPrice UAH',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: CustomButton(
+                              onPressed: () async {
+                                // Get the MoviesService from the context
+                                var moviesService = Provider.of<MovieService>(
+                                    context,
+                                    listen: false);
+
+                                // Get the selected seats and session ID from the MoviesState
+                                Set<Seat> selectedSeats = state.selectedSeats!;
+                                int sessionId = state.movieSession!.id;
+
+                                // Call the bookSeats method and handle the result
+                                bool success = await moviesService.bookSeats(
+                                    seats: selectedSeats, sessionId: sessionId);
+                                if (success) {
+                                  BlocProvider.of<NavigationCubit>(context)
+                                      .openPaymentPage();
+                                } else {
+                                  // Handle failed booking
+                                }
+                              },
+                              child: const Text('Buy Tickets')),
+                        ),
+                      ],
+                    ),
+                  ))
+            ],
+          );
+        }));
   }
 }
 
@@ -234,7 +350,18 @@ class SeatContainer extends StatelessWidget {
 }
 
 class MovieBanner extends StatelessWidget {
-  const MovieBanner({Key? key}) : super(key: key);
+  String title;
+  String imageSrc;
+  int duration;
+  String date;
+
+  MovieBanner(
+      {Key? key,
+      required this.title,
+      required this.imageSrc,
+      required this.duration,
+      required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -253,8 +380,9 @@ class MovieBanner extends StatelessWidget {
                       width: 2,
                     ),
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 40,
+                    foregroundImage: NetworkImage(imageSrc),
                   ),
                 ),
               ),
@@ -264,12 +392,12 @@ class MovieBanner extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Title really long for tests",
+                      title,
                       style: nunito.w500.s22,
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                     ),
-                    Text("12 May, 12.05", style: nunito.s14),
+                    Text(date, style: nunito.s14),
                     Container(
                         decoration: BoxDecoration(
                             color: CustomColors.yellow17,
@@ -277,7 +405,7 @@ class MovieBanner extends StatelessWidget {
                                 BorderRadius.circular(CustomBorderRadius.br)),
                         child: Padding(
                           padding: Paddings.all5,
-                          child: Text('120 min', style: nunito.s12.white),
+                          child: Text('$duration min', style: nunito.s12.white),
                         ))
                   ],
                 ),

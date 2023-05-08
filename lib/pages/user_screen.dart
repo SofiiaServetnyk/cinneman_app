@@ -87,7 +87,14 @@ class TicketContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
-            children: [MovieBanner()],
+            children: [
+              MovieBanner(
+                title: "test",
+                duration: 10,
+                date: "",
+                imageSrc: "",
+              )
+            ],
           ),
           Row(
             children: [

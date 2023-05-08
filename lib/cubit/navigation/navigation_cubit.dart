@@ -34,6 +34,10 @@ class NavigationCubit extends Cubit<NavigationState> {
     push(RouteConfig(route: AppRoutes.seatSelectPage, args: session));
   }
 
+  void openPaymentPage() {
+    push(RouteConfig(route: AppRoutes.checkoutPage));
+  }
+
   void push(RouteConfig routePath) {
     emit(state.push(routePath));
   }
