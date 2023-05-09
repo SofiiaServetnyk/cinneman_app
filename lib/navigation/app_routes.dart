@@ -4,7 +4,7 @@ import 'package:cinneman/pages/movie_details.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:cinneman/pages/otp_screen.dart';
 import 'package:cinneman/pages/payment_screen.dart';
-import 'package:cinneman/pages/session_seleciton.dart';
+import 'package:cinneman/pages/seat_selection_screen.dart';
 import 'package:cinneman/pages/splash_screen.dart';
 import 'package:cinneman/pages/user_screen.dart';
 import 'package:cinneman/pages/welcome_screen.dart';

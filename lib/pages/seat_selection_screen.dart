@@ -81,17 +81,18 @@ class SeatSelectionPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: SizedBoxSize.sbs20,
                         ),
                         Container(
-                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          color: const Color.fromRGBO(0, 0, 0, 0.25),
                           child: SizedBox(
                             height: 300,
                             child: InteractiveViewer(
                               constrained: false,
                               scaleEnabled: true,
-                              boundaryMargin: EdgeInsets.all(double.infinity),
+                              boundaryMargin:
+                                  const EdgeInsets.all(double.infinity),
                               alignment: Alignment.topCenter,
                               transformationController:
                                   _transformationController,
@@ -137,13 +138,13 @@ class SeatSelectionPage extends StatelessWidget {
                                         style:
                                             DefaultTextStyle.of(context).style,
                                         children: [
-                                          TextSpan(
+                                          const TextSpan(
                                             text: 'Row: ',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           TextSpan(text: '${seat.rowIndex}  '),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: 'Seat: ',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold),
@@ -160,12 +161,12 @@ class SeatSelectionPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
+                          margin: const EdgeInsets.symmetric(vertical: 20),
                           child: RichText(
                             text: TextSpan(
                               style: DefaultTextStyle.of(context).style,
                               children: [
-                                TextSpan(
+                                const TextSpan(
                                   text: 'Total price: ',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),

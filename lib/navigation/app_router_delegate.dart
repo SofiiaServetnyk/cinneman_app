@@ -36,7 +36,7 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
         .map((r) => _pageGenerator.createPage(r))
         .toList();
 
-    // pages.add(MaterialPage(child: SeatSelectionPage()));
+    // pages.add(MaterialPage(child: PaymentScreen()));
 
     return Navigator(
       key: navigatorKey,

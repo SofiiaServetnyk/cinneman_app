@@ -13,7 +13,7 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add your payment information: ", style: nunito.black.s22),
+        title: Text("Add your payment information: ", style: nunito.black.s20),
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
@@ -36,7 +36,7 @@ class PaymentScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         CustomTextField(
-                          prefixicon: Padding(
+                          prefixIcon: Padding(
                             padding: Paddings.all5,
                             child: Image.asset(
                               height: ButtonSize.sessionMinHeight,
@@ -46,6 +46,9 @@ class PaymentScreen extends StatelessWidget {
                           ),
                           keyboardType: TextInputType.number,
                           hint: "Card number",
+                          formatter: "space",
+                          enabledBorder: CustomColors.grey,
+                          focusBorder: CustomColors.brown1,
                           limitTextInput: 19,
                         ),
                         SizedBox(
@@ -55,7 +58,7 @@ class PaymentScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomTextField(
-                                prefixicon: Padding(
+                                prefixIcon: Padding(
                                   padding: Paddings.all5,
                                   child: Image.asset(
                                     height: ButtonSize.sessionMinHeight,
@@ -64,7 +67,9 @@ class PaymentScreen extends StatelessWidget {
                                   ),
                                 ),
                                 keyboardType: TextInputType.number,
-                                slashFormatter: true,
+                                formatter: "slash",
+                                enabledBorder: CustomColors.grey,
+                                focusBorder: CustomColors.brown1,
                                 maxWidth: ButtonSize.paymentMaxWidth,
                                 hint: "MM/YY",
                                 limitTextInput: 5),
@@ -72,7 +77,7 @@ class PaymentScreen extends StatelessWidget {
                               height: SizedBoxSize.sbs15,
                             ),
                             CustomTextField(
-                                prefixicon: Padding(
+                                prefixIcon: Padding(
                                   padding: Paddings.all5,
                                   child: Image.asset(
                                     height: ButtonSize.sessionMinHeight,
@@ -82,15 +87,43 @@ class PaymentScreen extends StatelessWidget {
                                 ),
                                 keyboardType: TextInputType.number,
                                 hint: "CVV",
+                                enabledBorder: CustomColors.grey,
+                                focusBorder: CustomColors.brown1,
                                 maxWidth: ButtonSize.paymentMaxWidth,
                                 limitTextInput: 3),
                           ],
                         ),
                         SizedBox(
+                          height: SizedBoxSize.sbs10,
+                        ),
+                        CustomTextField(
+                            prefixIcon: Padding(
+                              padding: Paddings.all5,
+                              child: SizedBox(
+                                height: 15,
+                                width: 15,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Image.asset(
+                                    PngIcons.emailIcon,
+                                    // fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            hint: "Email",
+                            enabledBorder: CustomColors.grey,
+                            focusBorder: CustomColors.brown1,
+                            keyboardType: TextInputType.emailAddress),
+                        SizedBox(
                           height: SizedBoxSize.sbs30,
                         ),
                         CustomButton(
-                            onPressed: () {}, child: Text('Delicious Payment'))
+                            onPressed: () {},
+                            child: Text(
+                              'Delicious Payment',
+                              style: nunito.white,
+                            ))
                       ],
                     ),
                   )

@@ -21,7 +21,7 @@ class MoviePreview extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(CustomBorderRadius.br),
                 child: Image.network(
-                  this.movie.image,
+                  movie.image,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -59,7 +59,7 @@ class MoviePreview extends StatelessWidget {
                         child: Center(
                             child: Text(
                                 style: nunito.brown1.s14.w800,
-                                '${this.movie.age}+')))
+                                '${movie.age}+')))
                   ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,12 +71,12 @@ class MoviePreview extends StatelessWidget {
                             Text(
                                 maxLines: 2,
                                 overflow: TextOverflow.fade,
-                                this.movie.name,
+                                movie.name,
                                 style: nunito.white.w800.s24),
                             Text(
                               maxLines: 1,
                               overflow: TextOverflow.fade,
-                              this.movie.genre,
+                              movie.genre,
                               style: nunito.white.w300,
                             ),
                           ],
@@ -86,7 +86,7 @@ class MoviePreview extends StatelessWidget {
                         children: [
                           Text(
                             style: nunito.white.w300,
-                            '${this.movie.duration} min',
+                            '${movie.duration} min',
                           ),
                         ],
                       )

@@ -12,6 +12,7 @@ abstract class PngIcons {
   static const String betterSeat = '$_path/better_seat.png';
   static const String userImage = '$_path/user_screen.png';
   static const String seatSelection = '$_path/seatselection_screen.png';
+  static const String emailIcon = '$_path/email_icon.png';
 }
 
 abstract class IconSize {

@@ -53,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
                       CustomTextField(
                         hint: 'Phone number',
                         hintStyle: nunito.yellow1.w500,
-                        style: nunito.white.w500.s16,
+                        style: nunito.w500.s16,
                         keyboardType: TextInputType.phone,
-                        cursorColor: CustomColors.white,
+                        fillColor: CustomColors.grey,
                         maxLength: 20,
                         onChanged: (s) {
                           setState(() {

@@ -9,13 +9,13 @@ class CustomTextField extends StatefulWidget {
       {Key? key,
       this.limitTextInput,
       this.focusBorder,
-      this.prefixicon,
+      this.prefixIcon,
       this.style,
       this.maxLength,
       this.enabledBorder,
       this.maxWidth,
       this.hint,
-      this.slashFormatter,
+      this.formatter,
       this.label,
       this.hintStyle,
       this.fillColor,
@@ -35,8 +35,8 @@ class CustomTextField extends StatefulWidget {
   final Color? fillColor;
   final Color? focusBorder;
   final double? maxWidth;
-  final Widget? prefixicon;
-  bool? slashFormatter = false;
+  final Widget? prefixIcon;
+  String? formatter;
 
   final Function(String)? onChanged;
 
@@ -61,13 +61,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
             FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]+'))
           else if (widget.keyboardType == TextInputType.number)
             FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]+')),
-          widget.slashFormatter == null
-              ? CardNumberInputFormatter()
-              : CardMonthInputFormatter(),
-          LengthLimitingTextInputFormatter(widget.limitTextInput ?? null),
+          if (widget.formatter != null)
+            if (widget.formatter == 'space') ...[
+              CardNumberInputFormatter()
+            ] else ...[
+              CardMonthInputFormatter()
+            ],
+          LengthLimitingTextInputFormatter(widget.limitTextInput),
         ],
         decoration: InputDecoration(
-            prefixIcon: widget.prefixicon ?? null,
+            prefixIcon: widget.prefixIcon,
             filled: true,
             fillColor: widget.fillColor ?? CustomColors.grey,
             hintText: widget.hint ?? '',
@@ -82,7 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   : BorderSide(color: CustomColors.white),
             ),
             enabledBorder: OutlineInputBorder(
-                borderSide: widget.focusBorder != null
+                borderSide: widget.enabledBorder != null
                     ? BorderSide(color: widget.enabledBorder!)
                     : BorderSide(color: CustomColors.yellow1),
                 borderRadius: BorderRadius.circular(CustomBorderRadius.br))),
@@ -135,7 +138,6 @@ class CardMonthInputFormatter extends TextInputFormatter {
       if (index % 2 == 0 && inputData.length != index) {
         buffer.write('/');
       }
-      ;
     }
     return TextEditingValue(
       text: buffer.toString(),

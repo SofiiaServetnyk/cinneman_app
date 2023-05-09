@@ -53,9 +53,8 @@ class _OtpPageState extends State<OtpPage> {
                         CustomTextField(
                           hint: '4-digit code',
                           hintStyle: nunito.yellow1.w500,
-                          style: nunito.white.w500.s16,
+                          style: nunito.w500.s16,
                           keyboardType: TextInputType.number,
-                          cursorColor: CustomColors.white,
                           maxLength: 4,
                           onChanged: (s) {
                             setState(() {
