@@ -5,11 +5,13 @@ import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/auth/auth_state.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
+import 'package:cinneman/data/models/ticket_model.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/pages/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -33,6 +35,9 @@ class _UserScreenState extends State<UserScreen> {
       body: SafeArea(
         child: Center(child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
+            List<Ticket> sortedTickets = List.from(state.tickets ?? [])
+              ..sort((a, b) => b.date.compareTo(a.date));
+
             return Column(
               children: [
                 Row(
@@ -59,23 +64,24 @@ class _UserScreenState extends State<UserScreen> {
                   padding: Paddings.all10,
                   child: Text("+380633072269", style: nunito),
                 ),
-                state.tickets?.isNotEmpty == true
+                sortedTickets.isNotEmpty
                     ? Expanded(
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.tickets?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) =>
-                            Padding(
-                          padding: Paddings.all10,
-                          child: TicketContainer(
-                            date: state.tickets![index].date,
-                            image: state.tickets![index].image,
-                            title: state.tickets![index].image,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: sortedTickets.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Padding(
+                            padding: Paddings.all10,
+                            child: TicketContainer(
+                              ticketId: sortedTickets[index].id,
+                              date: sortedTickets[index].date,
+                              image: sortedTickets[index].image,
+                              title: sortedTickets[index].name,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                    : Text('no tickets'),
+                      )
+                    : Text('You have no tickets'),
                 CustomTextButton(
                     onPressed: () {
                       BlocProvider.of<UserCubit>(context).logoutUser();
@@ -93,19 +99,26 @@ class _UserScreenState extends State<UserScreen> {
 }
 
 class TicketContainer extends StatelessWidget {
+  int ticketId;
   String title;
 
   DateTime date;
   String image;
 
   TicketContainer(
-      {Key? key, required this.date, required this.image, required this.title})
+      {Key? key,
+      required this.ticketId,
+      required this.date,
+      required this.image,
+      required this.title})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var qrContent = "movie/$ticketId";
+
     return Container(
-      height: 450,
+      width: 350,
       decoration: BoxDecoration(
           color: CustomColors.grey,
           borderRadius: BorderRadius.circular(CustomBorderRadius.br)),
@@ -121,32 +134,31 @@ class TicketContainer extends StatelessWidget {
               )
             ],
           ),
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
-                children: [Text("Row: \n99", style: nunito.s14)],
-              )),
-              Expanded(
-                  child: Column(
-                children: [Text("Seat: \n999", style: nunito.s14)],
-              )),
-              Expanded(
-                  child: Column(
-                children: [Text("Room: \nNew York", style: nunito.s14)],
-              )),
-              Expanded(
-                  child: Column(
-                children: [Text("Price: \n999", style: nunito.s14)],
-              ))
-            ],
-          ),
           Padding(
             padding: Paddings.all15,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(width: 225, height: 225, color: Colors.black)
+                Padding(
+                  padding: Paddings.all15,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: QrImage(
+                          data: qrContent,
+                          version: QrVersions.auto,
+                          size: 225.0,
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           )

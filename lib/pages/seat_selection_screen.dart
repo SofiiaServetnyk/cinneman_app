@@ -97,7 +97,8 @@ class SeatSelectionPage extends StatelessWidget {
                                 Container(
                                   decoration: BoxDecoration(
                                     color: CustomColors.brown1.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(CustomBorderRadius.br),
+                                    borderRadius: BorderRadius.circular(
+                                        CustomBorderRadius.br),
                                   ),
                                   child: SizedBox(
                                     height: 300,
@@ -396,7 +397,7 @@ class MovieBanner extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.imageSrc,
-     this.duration,
+      this.duration,
       required this.date})
       : super(key: key);
 
@@ -435,15 +436,19 @@ class MovieBanner extends StatelessWidget {
                       overflow: TextOverflow.fade,
                     ),
                     Text(date, style: nunito.s14),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: CustomColors.yellow17,
-                            borderRadius:
-                                BorderRadius.circular(CustomBorderRadius.br)),
-                        child: Padding(
-                          padding: Paddings.all5,
-                          child: Text('$duration min', style: nunito.s12.white),
-                        ))
+                    Visibility(
+                      visible: duration != null,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: CustomColors.yellow17,
+                              borderRadius:
+                                  BorderRadius.circular(CustomBorderRadius.br)),
+                          child: Padding(
+                            padding: Paddings.all5,
+                            child:
+                                Text('$duration min', style: nunito.s12.white),
+                          )),
+                    )
                   ],
                 ),
               )
