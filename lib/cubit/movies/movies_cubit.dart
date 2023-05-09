@@ -17,11 +17,7 @@ class MoviesCubit extends Cubit<MoviesState> {
 
   Future<void> loadMovies() async {
     var moviesList = await movieService.getMovies();
-    Map<int, Movie> movies = Map.fromIterable(
-      moviesList,
-      key: (movie) => movie.id,
-      value: (movie) => movie,
-    );
+    Map<int, Movie> movies = {for (var movie in moviesList) movie.id: movie};
 
     emit(MoviesState(
         movies: movies,
@@ -32,6 +28,23 @@ class MoviesCubit extends Cubit<MoviesState> {
   Future<void> selectSession(MovieSession session) async {
     emit(MoviesState(
         movies: state.movies, movieSession: session, selectedSeats: {}));
+  }
+
+  Future<void> updateSession() async {
+    try {
+      MovieSession? movieSession = await movieService.getMovieSessionById(
+          movie: state.movieSession!.movie, sessionId: state.movieSession!.id);
+      if (movieSession != null) {
+        emit(MoviesState(
+            movies: state.movies,
+            movieSession: movieSession,
+            selectedSeats: state.selectedSeats));
+      } else {
+        throw MoviesServiceException("Error updating session data.");
+      }
+    } catch (e) {
+      throw MoviesServiceException("Error updating session data.");
+    }
   }
 
   Future<void> clearSession() async {

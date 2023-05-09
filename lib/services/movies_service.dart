@@ -31,12 +31,10 @@ class MovieService {
             .toList();
         return movies;
       } else {
-        return [];
-        // throw Exception('Failed to load movies');
+        throw MoviesServiceException('Failed to load movies.');
       }
     } catch (e) {
-      // throw Exception('Failed to load movies: $e');
-      return [];
+      throw MoviesServiceException('Failed to load movies.');
     }
   }
 
@@ -61,10 +59,10 @@ class MovieService {
             .toList();
         return sessions;
       } else {
-        return [];
+        throw MoviesServiceException('Failed to load movie sessions.');
       }
     } catch (e) {
-      return [];
+      throw MoviesServiceException('Failed to load movie sessions.');
     }
   }
 
@@ -81,10 +79,10 @@ class MovieService {
       if (response.statusCode == 200) {
         return MovieSession.fromJson(response.data['data'], movie);
       } else {
-        return null;
+        throw MoviesServiceException('Failed to load movie session.');
       }
     } catch (e) {
-      return null;
+      throw MoviesServiceException('Failed to load movie session.');
     }
   }
 
@@ -110,7 +108,18 @@ class MovieService {
         return false;
       }
     } catch (e) {
-      return false;
+      throw MoviesServiceException('Failed to book seats.');
     }
+  }
+}
+
+class MoviesServiceException implements Exception {
+  final String message;
+
+  MoviesServiceException(this.message);
+
+  @override
+  String toString() {
+    return 'MoviesServiceException: $message';
   }
 }

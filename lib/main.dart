@@ -1,4 +1,5 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_router_delegate.dart';
@@ -26,10 +27,15 @@ class MyApp extends StatelessWidget {
     final AuthCubit authCubit = AuthCubit();
     final NavigationCubit navigationCubit = NavigationCubit(authCubit);
     final MoviesCubit moviesCubit = MoviesCubit(authCubit);
+    final ErrorCubit errorCubit = ErrorCubit();
 
     authCubit.stream.listen((state) async {
       if (state.isAuthenticated) {
-        await moviesCubit.loadMovies();
+        try {
+          await moviesCubit.loadMovies();
+        } catch (e) {
+          errorCubit.showError('Failed to load movies.');
+        }
       }
     });
 
@@ -38,6 +44,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => authCubit),
           BlocProvider(create: (_) => navigationCubit),
           BlocProvider(create: (_) => moviesCubit),
+          BlocProvider(create: (_) => errorCubit),
           Provider<MovieService>(create: (_) => MovieService(authCubit)),
         ],
         child: MaterialApp.router(
@@ -46,6 +53,7 @@ class MyApp extends StatelessWidget {
           routerDelegate: CinnemanRouterDelegate(
               authCubit: authCubit,
               navigationCubit: navigationCubit,
+              errorCubit: errorCubit,
               pageGenerator: PageGenerator()),
         ));
   }

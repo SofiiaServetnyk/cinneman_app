@@ -3,7 +3,7 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
-import 'package:cinneman/cubit/movies/movies_cubit.dart';
+import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
@@ -18,7 +18,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<AuthCubit>(context);
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
-    var moviesCubit = BlocProvider.of<MoviesCubit>(context);
+    var errorCubit = BlocProvider.of<ErrorCubit>(context);
 
     return Scaffold(
         backgroundColor: CustomColors.brown2,
@@ -64,6 +64,9 @@ class WelcomePage extends StatelessWidget {
 
                           if (authCubit.state.isAuthenticated) {
                             navigationCubit.startAuthenticated();
+                          } else {
+                            errorCubit.showError(
+                                "Could not login as Guest. Please check your internet connection.");
                           }
                         },
                         child: Text('I am guest, just want a bite',

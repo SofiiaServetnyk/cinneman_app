@@ -61,7 +61,7 @@ class PageGenerator {
         var session = config.args as MovieSession;
 
         return MaterialPage(
-            child: SeatSelectionPage(session: session),
+            child: SeatSelectionPage(),
             key: ValueKey(AppRoutes.seatSelectPage));
 
       case AppRoutes.checkoutPage:

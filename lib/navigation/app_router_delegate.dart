@@ -1,7 +1,9 @@
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteConfig> {
@@ -9,15 +11,18 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
 
   final AuthCubit _authCubit;
   final NavigationCubit _navigationCubit;
+  final ErrorCubit _errorCubit;
   final PageGenerator _pageGenerator;
 
   CinnemanRouterDelegate(
       {required AuthCubit authCubit,
       required NavigationCubit navigationCubit,
+      required ErrorCubit errorCubit,
       required PageGenerator pageGenerator})
       : navigatorKey = GlobalKey<NavigatorState>(),
         _authCubit = authCubit,
         _navigationCubit = navigationCubit,
+        _errorCubit = errorCubit,
         _pageGenerator = pageGenerator {
     _navigationCubit.stream.listen((_) {
       notifyListeners();
@@ -38,18 +43,31 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
 
     // pages.add(MaterialPage(child: PaymentScreen()));
 
-    return Navigator(
-      key: navigatorKey,
-      pages: pages,
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
+    return BlocListener<ErrorCubit, String?>(
+      bloc: _errorCubit,
+      listener: (context, error) {
+        if (error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(error),
+            duration: Duration(seconds: 3),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
         }
-
-        _navigationCubit.pop();
-
-        return true;
       },
+      child: Navigator(
+        key: navigatorKey,
+        pages: pages,
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+
+          _navigationCubit.pop();
+
+          return true;
+        },
+      ),
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
+import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/data/models/movies.dart';
@@ -57,16 +58,32 @@ class _CustomCalendarState extends State<CustomCalendar> {
       loading = true;
     });
 
-    var movieService = Provider.of<MovieService>(context, listen: false);
-    var sessions =
-        await movieService.getMovieSessions(movie: widget.movie, date: day);
-    sessions.sort((a, b) => a.date.compareTo(b.date));
+    try {
+      var movieService = Provider.of<MovieService>(context, listen: false);
+      var sessions =
+          await movieService.getMovieSessions(movie: widget.movie, date: day);
+      sessions.sort((a, b) => a.date.compareTo(b.date));
 
-    setState(() {
-      loading = false;
-    });
+      setState(() {
+        loading = false;
+      });
 
-    return sessions;
+      return sessions;
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+
+      // Show SnackBar using ErrorCubit
+      if (e is MoviesServiceException) {
+        BlocProvider.of<ErrorCubit>(context).addError(e.message);
+      } else {
+        BlocProvider.of<ErrorCubit>(context)
+            .addError('An unexpected error occurred: $e');
+      }
+
+      return [];
+    }
   }
 
   void onDaySelected(DateTime day, DateTime focusedDay) async {

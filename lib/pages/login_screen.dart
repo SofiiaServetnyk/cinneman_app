@@ -3,6 +3,7 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<AuthCubit>(context);
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+    var errorCubit = BlocProvider.of<ErrorCubit>(context);
 
     return Scaffold(
         backgroundColor: CustomColors.brown2,
@@ -66,11 +68,19 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: SizedBoxSize.sbs100),
                       CustomTextButton(
                           onPressed: () async {
+                            if (phoneNumber.isEmpty) {
+                              errorCubit.showError("Please enter phone number");
+                              return;
+                            }
+
                             await authCubit.enterPhoneNumber(phoneNumber);
 
                             if (authCubit.state.phoneNumber != null) {
                               navigationCubit
                                   .goToPage(RouteConfig(route: AppRoutes.otp));
+                            } else {
+                              errorCubit.showError(
+                                  "Could not send OTP. Please check phone number or your internet connection.");
                             }
                           },
                           child: Text('Send', style: nunito.s18.yellow1))
