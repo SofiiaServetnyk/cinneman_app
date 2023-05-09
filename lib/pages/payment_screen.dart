@@ -211,7 +211,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                               if (BlocProvider.of<MoviesCubit>(context).state
                                   is SuccessfulPaymentMovieState) {
-                                await BlocProvider.of<NavigationCubit>(context)
+                                BlocProvider.of<NavigationCubit>(context)
                                     .openUserPageAfterSuccesfulPayment();
                               } else {
                                 BlocProvider.of<ErrorCubit>(context)
