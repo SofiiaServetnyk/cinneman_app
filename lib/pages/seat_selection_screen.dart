@@ -338,44 +338,47 @@ class SeatContainer extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 38,
-        margin: const EdgeInsets.all(5),
-        child: Center(
-            child: Wrap(
-          alignment: WrapAlignment.center,
-          direction: Axis.vertical,
-          children: [
-            Container(
-              width: 38,
-              decoration: BoxDecoration(
-                color: seatColor.withOpacity(available ? 1 : 0.25),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: selected ? Colors.blue : Colors.black,
-                  width: selected ? 4.0 : 1.0,
+      child: Opacity(
+        opacity: available || selected ? 1 : 0.25,
+        child: Container(
+          width: 38,
+          margin: const EdgeInsets.all(5),
+          child: Center(
+              child: Wrap(
+            alignment: WrapAlignment.center,
+            direction: Axis.vertical,
+            children: [
+              Container(
+                width: 38,
+                decoration: BoxDecoration(
+                  color: seatColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: selected ? Colors.blue : Colors.black,
+                    width: selected ? 4.0 : 1.0,
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(1),
-                child: ClipOval(
-                  child: Image.asset(
-                    fit: BoxFit.contain,
-                    PngIcons.betterSeat,
-                    width: 25,
+                child: Padding(
+                  padding: const EdgeInsets.all(1),
+                  child: ClipOval(
+                    child: Image.asset(
+                      fit: BoxFit.contain,
+                      PngIcons.betterSeat,
+                      width: 25,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Container(
-                width: 38,
-                child: Center(
-                    child: Text(
-                  index.toString(),
-                  style: nunito.s12,
-                )))
-          ],
-        )),
+              Container(
+                  width: 38,
+                  child: Center(
+                      child: Text(
+                    index.toString(),
+                    style: nunito.s12,
+                  )))
+            ],
+          )),
+        ),
       ),
     );
   }

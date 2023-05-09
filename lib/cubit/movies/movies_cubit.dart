@@ -35,10 +35,23 @@ class MoviesCubit extends Cubit<MoviesState> {
       MovieSession? movieSession = await movieService.getMovieSessionById(
           movie: state.movieSession!.movie, sessionId: state.movieSession!.id);
       if (movieSession != null) {
+        Set<Seat> newSelectedSeats = {};
+
+        for (Seat selectedSeat in state.selectedSeats!) {
+          SeatRow? updatedSeatRow = movieSession.room.rows
+              .firstWhere((row) => row.index == selectedSeat.rowIndex);
+
+          Seat? updatedSeat = updatedSeatRow.seats.firstWhere(
+            (seat) => seat.index == selectedSeat.index,
+          );
+
+          newSelectedSeats.add(updatedSeat);
+        }
+
         emit(MoviesState(
             movies: state.movies,
             movieSession: movieSession,
-            selectedSeats: state.selectedSeats));
+            selectedSeats: newSelectedSeats));
       } else {
         throw MoviesServiceException("Error updating session data.");
       }
