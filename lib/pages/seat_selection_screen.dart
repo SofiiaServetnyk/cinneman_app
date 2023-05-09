@@ -101,8 +101,7 @@ class SeatSelectionPage extends StatelessWidget {
                                     child: InteractiveViewer(
                                       constrained: false,
                                       scaleEnabled: true,
-                                      boundaryMargin:
-                                          EdgeInsets.all(double.infinity),
+                                      boundaryMargin: EdgeInsets.all(200),
                                       alignment: Alignment.topCenter,
                                       transformationController:
                                           _transformationController,
