@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:cinneman/data/models/ticket_model.dart';
+import 'package:cinneman/data/models/ticket.dart';
+import 'package:cinneman/data/models/user.dart';
 import 'package:cinneman/services/device_service.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:dio/dio.dart';
@@ -91,15 +92,25 @@ class AuthApiService {
     return null;
   }
 
-  Future<String> _calculateSignature(String sessionToken) async {
-    final hash = await Sha256().hash(
-      utf8.encode(sessionToken + secretKey),
-    );
-    return hash.bytes
-        .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
-        .join();
+  Future<User?> getCurrentUser(String accessToken) async {
+    try {
+      final response = await _dio.get(
+        "$apiUrl/api/user",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+          },
+        ),
+      );
+      final jsonResponse = response.data;
+      if (jsonResponse["success"]) {
+        return User.fromJson(jsonResponse["data"]);
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
   }
-
 
   Future<List<Ticket>?> getTickets(String accessToken) async {
     try {
@@ -123,4 +134,12 @@ class AuthApiService {
     return null;
   }
 
+  Future<String> _calculateSignature(String sessionToken) async {
+    final hash = await Sha256().hash(
+      utf8.encode(sessionToken + secretKey),
+    );
+    return hash.bytes
+        .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join();
+  }
 }

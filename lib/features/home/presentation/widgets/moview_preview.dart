@@ -1,7 +1,7 @@
 import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
-import 'package:cinneman/data/models/movies.dart';
+import 'package:cinneman/data/models/movie.dart';
 import 'package:flutter/material.dart';
 
 class MoviePreview extends StatelessWidget {

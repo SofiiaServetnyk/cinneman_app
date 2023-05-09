@@ -2,10 +2,10 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
-import 'package:cinneman/cubit/auth/auth_state.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
-import 'package:cinneman/data/models/ticket_model.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
+import 'package:cinneman/cubit/user/user_state.dart';
+import 'package:cinneman/data/models/ticket.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/pages/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +62,9 @@ class _UserScreenState extends State<UserScreen> {
                 ),
                 Padding(
                   padding: Paddings.all10,
-                  child: Text("+380633072269", style: nunito),
+                  child: Text(
+                      state is Authenticated ? state.phoneNumber! : 'Guest',
+                      style: nunito),
                 ),
                 sortedTickets.isNotEmpty
                     ? Expanded(

@@ -1,7 +1,7 @@
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/navigation/app_router_delegate.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:cinneman/services/movies_service.dart';

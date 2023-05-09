@@ -1,4 +1,4 @@
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 

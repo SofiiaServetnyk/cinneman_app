@@ -1,6 +1,6 @@
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
-import 'package:cinneman/data/models/movies.dart';
-import 'package:cinneman/data/models/session_models.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
+import 'package:cinneman/data/models/movie.dart';
+import 'package:cinneman/data/models/movie_session_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';

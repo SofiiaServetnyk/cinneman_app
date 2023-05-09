@@ -1,6 +1,6 @@
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_state.dart';
-import 'package:cinneman/data/models/session_models.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
+import 'package:cinneman/data/models/movie_session_models.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

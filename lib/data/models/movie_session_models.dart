@@ -1,4 +1,4 @@
-import 'package:cinneman/data/models/movies.dart';
+import 'package:cinneman/data/models/movie.dart';
 
 enum SeatType {
   NORMAL,

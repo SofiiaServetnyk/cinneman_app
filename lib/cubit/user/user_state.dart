@@ -1,4 +1,4 @@
-import 'package:cinneman/data/models/ticket_model.dart';
+import 'package:cinneman/data/models/ticket.dart';
 
 abstract class UserState {
   final bool isAuthenticated;
@@ -33,10 +33,14 @@ class Guest extends UserState {
 }
 
 class Authenticated extends UserState {
-  Authenticated({required String accessToken, List<Ticket>? tickets})
+  Authenticated(
+      {required String accessToken,
+      required String phoneNumber,
+      List<Ticket>? tickets})
       : super(
             isAnonymous: false,
             isAuthenticated: true,
             accessToken: accessToken,
+            phoneNumber: phoneNumber,
             tickets: tickets);
 }

@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
-import 'package:cinneman/cubit/auth/auth_cubit.dart';
-import 'package:cinneman/data/models/movies.dart';
-import 'package:cinneman/data/models/session_models.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
+import 'package:cinneman/data/models/movie.dart';
+import 'package:cinneman/data/models/movie_session_models.dart';
 import 'package:cinneman/services/movies_service.dart';
 import 'package:meta/meta.dart';
 
 part 'movies_state.dart';
 
 class MoviesCubit extends Cubit<MoviesState> {
-  final UserCubit authCubit;
+  final UserCubit userCubit;
   final MovieService movieService;
 
-  MoviesCubit(this.authCubit)
-      : this.movieService = MovieService(authCubit),
+  MoviesCubit(this.userCubit)
+      : this.movieService = MovieService(userCubit),
         super(MoviesState(movies: {}));
 
   Future<void> loadMovies() async {
