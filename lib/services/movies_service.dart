@@ -111,6 +111,43 @@ class MovieService {
       throw MoviesServiceException('Failed to book seats.');
     }
   }
+
+  Future<bool> buyTickets({
+    required List<Seat> seats,
+    required MovieSession session,
+    required String email,
+    required String cardNumber,
+    required String expirationDate,
+    required String cvv,
+  }) async {
+    try {
+      // Map the seats to their IDs
+      List<int> seatIds = seats.map((seat) => seat.id).toList();
+
+      final response = await _dio.post(
+        '$apiUrl/api/movies/buy',
+        data: {
+          'seats': seatIds,
+          'sessionId': session.id,
+          'email': email,
+          'cardNumber': cardNumber,
+          'expirationDate': expirationDate,
+          'cvv': cvv,
+        },
+        options: Options(headers: {
+          'Authorization': 'Bearer ${authCubit.state.accessToken}',
+        }),
+      );
+
+      if (response.statusCode == 200 && response.data['success']) {
+        return response.data['data'];
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw MoviesServiceException('Failed to buy tickets.');
+    }
+  }
 }
 
 class MoviesServiceException implements Exception {

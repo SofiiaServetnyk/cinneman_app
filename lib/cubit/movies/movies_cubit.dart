@@ -81,4 +81,36 @@ class MoviesCubit extends Cubit<MoviesState> {
         movieSession: state.movieSession,
         selectedSeats: seatsSet));
   }
+
+  Future<void> buyTickets({
+    required List<Seat> seats,
+    required MovieSession session,
+    required String email,
+    required String cardNumber,
+    required String expirationDate,
+    required String cvv,
+  }) async {
+    try {
+      final success = await movieService.buyTickets(
+        seats: seats,
+        session: session,
+        email: email,
+        cardNumber: cardNumber,
+        expirationDate: expirationDate,
+        cvv: cvv,
+      );
+
+      if (success) {
+        emit(SuccessfulPaymentMovieState(
+          movies: state.movies,
+          movieSession: state.movieSession,
+          selectedSeats: state.selectedSeats,
+        ));
+      } else {
+        throw MoviesServiceException("Error buying tickets.");
+      }
+    } catch (e) {
+      throw MoviesServiceException("Error buying tickets.");
+    }
+  }
 }
