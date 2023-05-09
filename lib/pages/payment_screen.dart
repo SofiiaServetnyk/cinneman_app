@@ -13,6 +13,7 @@ class PaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: CustomColors.brown1),
         title: Text("Add your payment information: ", style: nunito.black.s20),
         elevation: 0.0,
         backgroundColor: Colors.transparent,
