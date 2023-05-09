@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var authCubit = BlocProvider.of<AuthCubit>(context);
+    var authCubit = BlocProvider.of<UserCubit>(context);
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
     var errorCubit = BlocProvider.of<ErrorCubit>(context);
 

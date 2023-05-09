@@ -95,7 +95,10 @@ class SeatSelectionPage extends StatelessWidget {
                                   height: SizedBoxSize.sbs20,
                                 ),
                                 Container(
-                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  decoration: BoxDecoration(
+                                    color: CustomColors.brown1.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(CustomBorderRadius.br),
+                                  ),
                                   child: SizedBox(
                                     height: 300,
                                     child: InteractiveViewer(
@@ -256,7 +259,7 @@ class SeatGridRow extends StatelessWidget {
               ...List.generate(
                   row.seats.length,
                   (index) => SeatContainer(
-                      index: index,
+                      index: row.seats[index].index,
                       type: row.seats[index].type,
                       available: row.seats[index].isAvailable,
                       onTap: () {
@@ -386,14 +389,14 @@ class SeatContainer extends StatelessWidget {
 class MovieBanner extends StatelessWidget {
   String title;
   String imageSrc;
-  int duration;
+  int? duration;
   String date;
 
   MovieBanner(
       {Key? key,
       required this.title,
       required this.imageSrc,
-      required this.duration,
+     this.duration,
       required this.date})
       : super(key: key);
 

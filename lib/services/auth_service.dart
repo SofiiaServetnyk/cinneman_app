@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinneman/data/models/ticket_model.dart';
 import 'package:cinneman/services/device_service.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:dio/dio.dart';
@@ -98,4 +99,28 @@ class AuthApiService {
         .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
         .join();
   }
+
+
+  Future<List<Ticket>?> getTickets(String accessToken) async {
+    try {
+      final response = await _dio.get(
+        "$apiUrl/api/user/tickets",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+          },
+        ),
+      );
+      final jsonResponse = response.data;
+      if (jsonResponse["success"]) {
+        return (jsonResponse["data"] as List)
+            .map((item) => Ticket.fromJson(item))
+            .toList();
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+
 }

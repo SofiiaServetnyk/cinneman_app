@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 class MovieService {
   final Dio _dio = Dio();
-  AuthCubit authCubit;
+  UserCubit authCubit;
   static String apiUrl = dotenv.env['API_URL']!;
 
   MovieService(this.authCubit);

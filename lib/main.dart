@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    final AuthCubit authCubit = AuthCubit();
+    final UserCubit authCubit = UserCubit();
     final NavigationCubit navigationCubit = NavigationCubit(authCubit);
     final MoviesCubit moviesCubit = MoviesCubit(authCubit);
     final ErrorCubit errorCubit = ErrorCubit();

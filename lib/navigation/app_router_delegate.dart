@@ -9,13 +9,13 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteConfig> {
   GlobalKey<NavigatorState> navigatorKey;
 
-  final AuthCubit _authCubit;
+  final UserCubit _authCubit;
   final NavigationCubit _navigationCubit;
   final ErrorCubit _errorCubit;
   final PageGenerator _pageGenerator;
 
   CinnemanRouterDelegate(
-      {required AuthCubit authCubit,
+      {required UserCubit authCubit,
       required NavigationCubit navigationCubit,
       required ErrorCubit errorCubit,
       required PageGenerator pageGenerator})

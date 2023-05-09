@@ -5,12 +5,12 @@ import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
-  AuthCubit authCubit;
+  UserCubit userCubit;
 
-  NavigationCubit(this.authCubit)
+  NavigationCubit(this.userCubit)
       : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)])) {
     Future.delayed(const Duration(seconds: 2)).then((_) {
-      if (authCubit.state.isAuthenticated) {
+      if (userCubit.state.isAuthenticated) {
         startAuthenticated();
       } else {
         startUnauthorized();

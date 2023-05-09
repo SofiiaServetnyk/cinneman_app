@@ -3,11 +3,13 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/auth/auth_cubit.dart';
+import 'package:cinneman/cubit/auth/auth_state.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
 import 'package:cinneman/pages/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -29,51 +31,61 @@ class _UserScreenState extends State<UserScreen> {
       ),
       backgroundColor: CustomColors.white,
       body: SafeArea(
-        // child: TextButton(
-        //   child: Text('Logout'),
-        //   onPressed: () {
-        //     BlocProvider.of<AuthCubit>(context).logoutUser();
-        //     BlocProvider.of<NavigationCubit>(context).startAnonymous();
-        //   },
-        // ),
-        child: Center(
-            child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: Center(child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            return Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          PngIcons.userImage,
+                          height: IconSize.smallIconSize,
+                        ),
+                      ),
                     ),
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      PngIcons.userImage,
-                      height: IconSize.smallIconSize,
-                    ),
-                  ),
+                  ],
                 ),
+                Padding(
+                  padding: Paddings.all10,
+                  child: Text("+380633072269", style: nunito),
+                ),
+                state.tickets?.isNotEmpty == true
+                    ? Expanded(
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.tickets?.length ?? 0,
+                        itemBuilder: (BuildContext context, int index) =>
+                            Padding(
+                          padding: Paddings.all10,
+                          child: TicketContainer(
+                            date: state.tickets![index].date,
+                            image: state.tickets![index].image,
+                            title: state.tickets![index].image,
+                          ),
+                        ),
+                      ),
+                    )
+                    : Text('no tickets'),
+                CustomTextButton(
+                    onPressed: () {
+                      BlocProvider.of<UserCubit>(context).logoutUser();
+                      BlocProvider.of<NavigationCubit>(context)
+                          .startUnauthorized();
+                    },
+                    child: Text("Log out", style: nunito)),
               ],
-            ),
-            Padding(
-              padding: Paddings.all10,
-              child: Text("+380633072269", style: nunito),
-            ),
-            Padding(
-              padding: Paddings.all10,
-              child: TicketContainer(),
-            ),
-            CustomTextButton(
-                onPressed: () {
-                  BlocProvider.of<AuthCubit>(context).logoutUser();
-                  BlocProvider.of<NavigationCubit>(context).startUnauthorized();
-                },
-                child: Text("Log out", style: nunito)),
-          ],
+            );
+          },
         )),
       ),
     );
@@ -81,7 +93,14 @@ class _UserScreenState extends State<UserScreen> {
 }
 
 class TicketContainer extends StatelessWidget {
-  const TicketContainer({Key? key}) : super(key: key);
+  String title;
+
+  DateTime date;
+  String image;
+
+  TicketContainer(
+      {Key? key, required this.date, required this.image, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +115,9 @@ class TicketContainer extends StatelessWidget {
           Row(
             children: [
               MovieBanner(
-                title: "test",
-                duration: 10,
-                date: "",
-                imageSrc: "",
+                title: title,
+                date: DateFormat("d MMMM, HH:mm").format(date),
+                imageSrc: image,
               )
             ],
           ),

@@ -3,11 +3,11 @@ import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class AppRouteInformationParser extends RouteInformationParser<RouteConfig> {
-  final AuthCubit _authCubit;
+  final UserCubit _authCubit;
 
   bool get isAuthenticated => _authCubit.state.isAuthenticated;
 
-  AppRouteInformationParser({required AuthCubit authCubit})
+  AppRouteInformationParser({required UserCubit authCubit})
       : _authCubit = authCubit;
 
   @override

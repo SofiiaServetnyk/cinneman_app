@@ -3,14 +3,22 @@ import 'package:cinneman/services/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+class UserCubit extends Cubit<UserState> {
   final AuthApiService _authApi = AuthApiService();
   final AuthStorage _authStorage = AuthStorage();
 
-  AuthCubit() : super(Unauthorized()) {
+  UserCubit() : super(Unauthorized()) {
     Future.delayed(Duration.zero, () => _authStorage.getAuthState())
-        .then((state) {
-      emit(state);
+        .then((state) async {
+      if (state is Authenticated) {
+        final tickets = await _authApi.getTickets(state.accessToken!);
+        emit(Authenticated(accessToken: state.accessToken!, tickets: tickets));
+      } else if (state is Guest) {
+        final tickets = await _authApi.getTickets(state.accessToken!);
+        emit(Guest(accessToken: state.accessToken!, tickets: tickets));
+      } else {
+        emit(state);
+      }
     });
   }
 
@@ -20,7 +28,8 @@ class AuthCubit extends Cubit<AuthState> {
     if (accessToken != null) {
       await _authStorage.saveAuthInfo(
           isAnonymous: true, accessToken: accessToken);
-      emit(Guest(accessToken: accessToken));
+      final tickets = await _authApi.getTickets(state.accessToken!);
+      emit(Guest(accessToken: accessToken, tickets: tickets));
     } else {
       emit(Unauthorized());
     }
@@ -41,7 +50,8 @@ class AuthCubit extends Cubit<AuthState> {
     if (accessToken != null) {
       await _authStorage.saveAuthInfo(
           isAnonymous: false, accessToken: accessToken);
-      emit(Authenticated(accessToken: accessToken));
+      final tickets = await _authApi.getTickets(state.accessToken!);
+      emit(Authenticated(accessToken: accessToken, tickets: tickets));
     } else {
       emit(Unauthorized(phoneNumber: state.phoneNumber));
     }
@@ -50,6 +60,17 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logoutUser() async {
     await _authStorage.clearAuthInfo();
     emit(Unauthorized());
+  }
+
+  Future<void> loadTickets() async {
+    if (state is Authenticated) {
+      final tickets = await _authApi.getTickets(state.accessToken!);
+      emit(Authenticated(accessToken: state.accessToken!, tickets: tickets));
+    }
+    else if (state is Guest) {
+      final tickets = await _authApi.getTickets(state.accessToken!);
+      emit(Guest(accessToken: state.accessToken!, tickets: tickets));
+    }
   }
 }
 
@@ -72,7 +93,7 @@ class AuthStorage {
     await prefs.remove(_accessTokenKey);
   }
 
-  Future<AuthState> getAuthState() async {
+  Future<UserState> getAuthState() async {
     final prefs = await SharedPreferences.getInstance();
     bool? isAnonymous = prefs.getBool(_isAnonymousKey);
     String? accessToken = prefs.getString(_accessTokenKey);
@@ -87,4 +108,6 @@ class AuthStorage {
       return Authenticated(accessToken: accessToken);
     }
   }
+
+
 }

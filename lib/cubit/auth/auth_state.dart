@@ -1,18 +1,21 @@
-abstract class AuthState {
+import 'package:cinneman/data/models/ticket_model.dart';
+
+abstract class UserState {
   final bool isAuthenticated;
   final bool isAnonymous;
-
+  final List<Ticket>? tickets;
   final String? accessToken;
   final String? phoneNumber;
 
-  AuthState(
+  UserState(
       {required this.isAuthenticated,
       required this.isAnonymous,
+      this.tickets,
       this.accessToken,
       this.phoneNumber});
 }
 
-class Unauthorized extends AuthState {
+class Unauthorized extends UserState {
   Unauthorized({String? phoneNumber})
       : super(
             isAnonymous: true,
@@ -20,16 +23,20 @@ class Unauthorized extends AuthState {
             phoneNumber: phoneNumber);
 }
 
-class Guest extends AuthState {
-  Guest({required String accessToken})
+class Guest extends UserState {
+  Guest({required String accessToken, List<Ticket>? tickets})
       : super(
-            isAnonymous: true, isAuthenticated: true, accessToken: accessToken);
+            isAnonymous: true,
+            isAuthenticated: true,
+            accessToken: accessToken,
+            tickets: tickets);
 }
 
-class Authenticated extends AuthState {
-  Authenticated({required String accessToken})
+class Authenticated extends UserState {
+  Authenticated({required String accessToken, List<Ticket>? tickets})
       : super(
             isAnonymous: false,
             isAuthenticated: true,
-            accessToken: accessToken);
+            accessToken: accessToken,
+            tickets: tickets);
 }
