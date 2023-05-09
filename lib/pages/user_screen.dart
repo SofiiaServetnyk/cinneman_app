@@ -35,8 +35,14 @@ class _UserScreenState extends State<UserScreen> {
       body: SafeArea(
         child: Center(child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
-            List<Ticket> sortedTickets = List.from(state.tickets ?? [])
-              ..sort((a, b) => b.date.compareTo(a.date));
+            List<Ticket> sortedTickets = (state.tickets ?? [])
+              ..sort((a, b) => a.date.compareTo(b.date))
+              ..where((ticket) {
+                final ticketDate = ticket.date;
+                final twoHoursAgo = DateTime.now().subtract(Duration(hours: 2));
+
+                return ticketDate.isAfter(twoHoursAgo);
+              }).toList();
 
             return Column(
               children: [

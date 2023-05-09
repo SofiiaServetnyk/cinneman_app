@@ -89,6 +89,15 @@ class UserCubit extends Cubit<UserState> {
       emit(Guest(accessToken: state.accessToken!, tickets: tickets));
     }
   }
+
+  Future<bool> isTokenValid() async {
+    if (state is Authenticated || state is Guest) {
+      final user = await _authApi.getCurrentUser(state.accessToken!);
+      return user != null;
+    } else {
+      return false;
+    }
+  }
 }
 
 class AuthStorage {
@@ -124,10 +133,10 @@ class AuthStorage {
       return Unauthorized();
     }
 
-    if (isAnonymous || phoneNumber == null) {
+    if (isAnonymous || (phoneNumber ?? "").isEmpty) {
       return Guest(accessToken: accessToken);
     } else {
-      return Authenticated(accessToken: accessToken, phoneNumber: phoneNumber);
+      return Authenticated(accessToken: accessToken, phoneNumber: phoneNumber!);
     }
   }
 }

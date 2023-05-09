@@ -5,6 +5,7 @@ import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
+import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/features/authorization/presentation/custom_button.dart';
 import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:cinneman/services/movies_service.dart';
@@ -25,7 +26,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String? email;
 
   Future<void> _handlePayment() async {
-    var errorCubit = BlocProvider.of<ErrorCubit>(context);
     if (cardNumber == null ||
         expirationDate == null ||
         cvv == null ||
@@ -36,12 +36,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
       final RegExp cardNumberRegExp = RegExp(
           r"^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6011[0-9]{12}|622((12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})|64[4-9][0-9]{13}|65[0-9]{14}|3(?:0[0-5]|[68][0-9])[0-9]{11}|3[47][0-9]{13})$");
       final RegExp expirationDateRegExp =
-      RegExp(r"^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$");
+          RegExp(r"^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$");
       final RegExp cvvRegExp = RegExp(r"^[0-9]{3}$");
 
       // Remove spaces from card number
       String cleanedCardNumber =
-      cardNumber!.replaceAll(RegExp(r"\s+\b|\b\s"), "");
+          cardNumber!.replaceAll(RegExp(r"\s+\b|\b\s"), "");
 
       if (!cardNumberRegExp.hasMatch(cleanedCardNumber)) {
         // errorCubit.showError("Invalid card number.");
@@ -197,12 +197,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         BlocBuilder<MoviesCubit, MoviesState>(
                           builder: (context, state) {
                             int totalPrice = 0;
-                              if (state.selectedSeats != null) {
+                            if (state.selectedSeats != null) {
                               for (var s in state.selectedSeats!) {
                                 totalPrice += s.price;
                               }
                             }
-                            return Text('$totalPrice');
+
+                            return Container(
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: [
+                                    TextSpan(
+                                      text: 'Total price: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: '$totalPrice UAH',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                         ),
                         CustomButton(
@@ -222,6 +240,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                               if (BlocProvider.of<MoviesCubit>(context).state
                                   is SuccessfulPaymentMovieState) {
+                                BlocProvider.of<UserCubit>(context)
+                                    .loadTickets();
                                 BlocProvider.of<NavigationCubit>(context)
                                     .openUserPageAfterSuccesfulPayment();
                               } else {
