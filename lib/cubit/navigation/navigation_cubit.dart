@@ -8,13 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
   UserCubit userCubit;
-  Timer? tokenValidationTimer;
 
   NavigationCubit(this.userCubit)
       : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)])) {
     Future.delayed(const Duration(seconds: 2)).then((_) {
       if (userCubit.state.isAuthenticated) {
-        startPeriodicTokenValidation();
         startAuthenticated();
       } else {
         startUnauthorized();
@@ -59,23 +57,8 @@ class NavigationCubit extends Cubit<NavigationState> {
     emit(state.clearAndPush(routePath));
   }
 
-  void startPeriodicTokenValidation() {
-    tokenValidationTimer = Timer.periodic(
-      Duration(minutes: 3),
-      (timer) async {
-        final isValid = await userCubit.isTokenValid();
-        if (!isValid) {
-          timer.cancel();
-          await userCubit.logoutUser();
-          startUnauthorized();
-        }
-      },
-    );
-  }
-
   @override
   Future<void> close() {
-    tokenValidationTimer?.cancel();
     return super.close();
   }
 }
