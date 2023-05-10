@@ -24,34 +24,39 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    final UserCubit authCubit = UserCubit();
-    final NavigationCubit navigationCubit = NavigationCubit(authCubit);
-    final MoviesCubit moviesCubit = MoviesCubit(authCubit);
+    final UserCubit userCubit = UserCubit();
+    final NavigationCubit navigationCubit = NavigationCubit(userCubit);
+    final MoviesCubit moviesCubit = MoviesCubit(userCubit);
     final ErrorCubit errorCubit = ErrorCubit();
 
-    authCubit.stream.listen((state) async {
-      if (state.isAuthenticated) {
+    initializeData() async {
+      await userCubit.loadStoredState();
+      navigationCubit.loadInitialNavigation();
+
+      if (userCubit.state.isAuthenticated) {
         try {
           await moviesCubit.loadMovies();
         } catch (e) {
           errorCubit.showError('Failed to load movies.');
         }
       }
-    });
+    }
+
+    initializeData();
 
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => authCubit),
+          BlocProvider(create: (_) => userCubit),
           BlocProvider(create: (_) => navigationCubit),
           BlocProvider(create: (_) => moviesCubit),
           BlocProvider(create: (_) => errorCubit),
-          Provider<MovieService>(create: (_) => MovieService(authCubit)),
+          Provider<MovieService>(create: (_) => MovieService(userCubit)),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Cinneman',
           routerDelegate: CinnemanRouterDelegate(
-              authCubit: authCubit,
+              authCubit: userCubit,
               navigationCubit: navigationCubit,
               errorCubit: errorCubit,
               pageGenerator: PageGenerator()),

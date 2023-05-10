@@ -7,34 +7,9 @@ class UserCubit extends Cubit<UserState> {
   final AuthApiService _authApi = AuthApiService();
   final AuthStorage _authStorage = AuthStorage();
 
-  UserCubit() : super(Unauthorized()) {
-    Future.delayed(Duration.zero, () => _authStorage.getAuthState())
-        .then((state) async {
-      if (state is! Unauthorized) {
-        var user = await _authApi.getCurrentUser(state.accessToken!);
-        if (user == null) {
-          // Invalid token, clear session data and stop processing.
-          _authStorage.clearAuthInfo();
-          return;
-        }
-      }
+  UserCubit() : super(Unauthorized());
 
-      if (state is Authenticated) {
-        final tickets = await _authApi.getTickets(state.accessToken!);
-        emit(Authenticated(
-            accessToken: state.accessToken!,
-            phoneNumber: state.phoneNumber!,
-            tickets: tickets));
-      } else if (state is Guest) {
-        final tickets = await _authApi.getTickets(state.accessToken!);
-        emit(Guest(accessToken: state.accessToken!, tickets: tickets));
-      } else {
-        emit(state);
-      }
-    });
-  }
-
-  Future<void> loginAsGuest() async {
+  loginAsGuest() async {
     final accessToken = await _authApi.getGuestAccessToken();
 
     if (accessToken != null) {
@@ -47,7 +22,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> enterPhoneNumber(String phoneNumber) async {
+  enterPhoneNumber(String phoneNumber) async {
     final success = await _authApi.sendOtpRequest(phoneNumber);
     if (success) {
       emit(Unauthorized(phoneNumber: phoneNumber));
@@ -56,7 +31,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> validateOtp(String otp) async {
+  validateOtp(String otp) async {
     final accessToken =
         await _authApi.getAuthorizedAccessToken(state.phoneNumber!, otp);
     if (accessToken != null) {
@@ -72,12 +47,12 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> logoutUser() async {
+  logoutUser() async {
     await _authStorage.clearAuthInfo();
     emit(Unauthorized());
   }
 
-  Future<void> loadTickets() async {
+  loadTickets() async {
     if (state is Authenticated) {
       final tickets = await _authApi.getTickets(state.accessToken!);
       emit(Authenticated(
@@ -90,7 +65,32 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<bool> isTokenValid() async {
+  loadStoredState() async {
+    var storedState = await _authStorage.getAuthState();
+    if (storedState is! Unauthorized) {
+      var user = await _authApi.getCurrentUser(storedState.accessToken!);
+      if (user == null) {
+        // Invalid token, clear session data and stop processing.
+        _authStorage.clearAuthInfo();
+        return;
+      }
+    }
+
+    if (storedState is Authenticated) {
+      final tickets = await _authApi.getTickets(storedState.accessToken!);
+      emit(Authenticated(
+          accessToken: storedState.accessToken!,
+          phoneNumber: storedState.phoneNumber!,
+          tickets: tickets));
+    } else if (storedState is Guest) {
+      final tickets = await _authApi.getTickets(storedState.accessToken!);
+      emit(Guest(accessToken: storedState.accessToken!, tickets: tickets));
+    } else {
+      emit(storedState);
+    }
+  }
+
+  isTokenValid() async {
     if (state is Authenticated || state is Guest) {
       final user = await _authApi.getCurrentUser(state.accessToken!);
       return user != null;

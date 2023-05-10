@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cinneman/cubit/navigation/navigation_state.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/data/models/movie_session_models.dart';
@@ -10,14 +8,14 @@ class NavigationCubit extends Cubit<NavigationState> {
   UserCubit userCubit;
 
   NavigationCubit(this.userCubit)
-      : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)])) {
-    Future.delayed(const Duration(seconds: 2)).then((_) {
-      if (userCubit.state.isAuthenticated) {
-        startAuthenticated();
-      } else {
-        startUnauthorized();
-      }
-    });
+      : super(NavigationState(stack: [RouteConfig(route: AppRoutes.splash)]));
+
+  loadInitialNavigation() async {
+    if (userCubit.state.isAuthenticated) {
+      startAuthenticated();
+    } else {
+      startUnauthorized();
+    }
   }
 
   void startUnauthorized() {
@@ -56,5 +54,4 @@ class NavigationCubit extends Cubit<NavigationState> {
   void goToPage(RouteConfig routePath) {
     emit(state.clearAndPush(routePath));
   }
-
 }
