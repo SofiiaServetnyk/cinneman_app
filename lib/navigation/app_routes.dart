@@ -20,10 +20,9 @@ enum AppRoutes {
   moviesListPage,
   movieDetailsPage,
   seatSelectPage,
-  checkoutPage,
+  paymentPage,
 
   userProfile,
-  userTickets,
 }
 
 class RouteConfig {
@@ -34,7 +33,7 @@ class RouteConfig {
 }
 
 class PageGenerator {
-  MaterialPage createPage(RouteConfig config) {
+  Page createPage(RouteConfig config) {
     switch (config.route) {
       case AppRoutes.welcomeScreen:
         return const MaterialPage(
@@ -58,15 +57,13 @@ class PageGenerator {
             key: const ValueKey(AppRoutes.movieDetailsPage));
 
       case AppRoutes.seatSelectPage:
-        var session = config.args as MovieSession;
-
         return MaterialPage(
             child: SeatSelectionPage(),
             key: const ValueKey(AppRoutes.seatSelectPage));
 
-      case AppRoutes.checkoutPage:
+      case AppRoutes.paymentPage:
         return const MaterialPage(
-            child: PaymentScreen(), key: ValueKey(AppRoutes.checkoutPage));
+            child: PaymentScreen(), key: ValueKey(AppRoutes.paymentPage));
 
       case AppRoutes.userProfile:
         return const MaterialPage(

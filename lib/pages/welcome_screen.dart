@@ -3,10 +3,10 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
+import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
 
-import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +20,7 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<UserCubit>(context);
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+    var moviesCubit = BlocProvider.of<MoviesCubit>(context);
     var errorCubit = BlocProvider.of<ErrorCubit>(context);
 
     return Scaffold(
@@ -54,8 +55,7 @@ class WelcomePage extends StatelessWidget {
                     const SizedBox(height: SizedBoxSize.sbs75),
                     CustomButton(
                         onPressed: () {
-                          navigationCubit
-                              .goToPage(RouteConfig(route: AppRoutes.login));
+                          navigationCubit.openLoginPage();
                         },
                         child: Text('Log in, I am gourmet',
                             style: nunito.s18.white)),
@@ -65,6 +65,7 @@ class WelcomePage extends StatelessWidget {
                           await authCubit.loginAsGuest();
 
                           if (authCubit.state.isAuthenticated) {
+                            moviesCubit.loadMovies();
                             navigationCubit.startAuthenticated();
                           } else {
                             errorCubit.showError(

@@ -4,18 +4,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserCubit extends Cubit<UserState> {
-  final AuthApiService _authApi = AuthApiService();
-  final AuthStorage _authStorage = AuthStorage();
+  final AuthApiService authApi = AuthApiService();
+  final UserDataStorage userDataStorage = UserDataStorage();
 
   UserCubit() : super(Unauthorized());
 
   loginAsGuest() async {
-    final accessToken = await _authApi.getGuestAccessToken();
+    final accessToken = await authApi.getGuestAccessToken();
 
     if (accessToken != null) {
-      await _authStorage.saveAuthInfo(
+      await userDataStorage.saveUserData(
           isAnonymous: true, accessToken: accessToken);
-      final tickets = await _authApi.getTickets(accessToken);
+      final tickets = await authApi.getTickets(accessToken);
       emit(Guest(accessToken: accessToken, tickets: tickets));
     } else {
       emit(Unauthorized());
@@ -23,7 +23,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   enterPhoneNumber(String phoneNumber) async {
-    final success = await _authApi.sendOtpRequest(phoneNumber);
+    final success = await authApi.sendOtpRequest(phoneNumber);
     if (success) {
       emit(Unauthorized(phoneNumber: phoneNumber));
     } else {
@@ -33,11 +33,11 @@ class UserCubit extends Cubit<UserState> {
 
   validateOtp(String otp) async {
     final accessToken =
-        await _authApi.getAuthorizedAccessToken(state.phoneNumber!, otp);
+        await authApi.getAuthorizedAccessToken(state.phoneNumber!, otp);
     if (accessToken != null) {
-      await _authStorage.saveAuthInfo(
+      await userDataStorage.saveUserData(
           isAnonymous: false, accessToken: accessToken);
-      final tickets = await _authApi.getTickets(accessToken);
+      final tickets = await authApi.getTickets(accessToken);
       emit(Authenticated(
           accessToken: accessToken,
           phoneNumber: state.phoneNumber!,
@@ -48,51 +48,49 @@ class UserCubit extends Cubit<UserState> {
   }
 
   logoutUser() async {
-    await _authStorage.clearAuthInfo();
+    await userDataStorage.clearUserData();
     emit(Unauthorized());
   }
 
   loadTickets() async {
     if (state is Authenticated) {
-      final tickets = await _authApi.getTickets(state.accessToken!);
+      final tickets = await authApi.getTickets(state.accessToken!);
       emit(Authenticated(
           accessToken: state.accessToken!,
           phoneNumber: state.phoneNumber!,
           tickets: tickets));
     } else if (state is Guest) {
-      final tickets = await _authApi.getTickets(state.accessToken!);
+      final tickets = await authApi.getTickets(state.accessToken!);
       emit(Guest(accessToken: state.accessToken!, tickets: tickets));
     }
   }
 
   loadStoredState() async {
-    var storedState = await _authStorage.getAuthState();
+    var storedState = await userDataStorage.getUserState();
+
     if (storedState is! Unauthorized) {
-      var user = await _authApi.getCurrentUser(storedState.accessToken!);
+      var user = await authApi.getCurrentUser(storedState.accessToken!);
       if (user == null) {
-        // Invalid token, clear session data and stop processing.
-        _authStorage.clearAuthInfo();
+        userDataStorage.clearUserData();
         return;
       }
     }
 
     if (storedState is Authenticated) {
-      final tickets = await _authApi.getTickets(storedState.accessToken!);
+      final tickets = await authApi.getTickets(storedState.accessToken!);
       emit(Authenticated(
           accessToken: storedState.accessToken!,
           phoneNumber: storedState.phoneNumber!,
           tickets: tickets));
     } else if (storedState is Guest) {
-      final tickets = await _authApi.getTickets(storedState.accessToken!);
+      final tickets = await authApi.getTickets(storedState.accessToken!);
       emit(Guest(accessToken: storedState.accessToken!, tickets: tickets));
-    } else {
-      emit(storedState);
     }
   }
 
   isTokenValid() async {
     if (state is Authenticated || state is Guest) {
-      final user = await _authApi.getCurrentUser(state.accessToken!);
+      final user = await authApi.getCurrentUser(state.accessToken!);
       return user != null;
     } else {
       return false;
@@ -100,31 +98,34 @@ class UserCubit extends Cubit<UserState> {
   }
 }
 
-class AuthStorage {
+class UserDataStorage {
   static const String _isAnonymousKey = 'anonymous';
   static const String _accessTokenKey = 'access_token';
   static const String _phoneNumberKey = 'phone_number';
 
-  Future<void> saveAuthInfo({
+  Future<void> saveUserData({
     required bool isAnonymous,
     String? accessToken,
     String? phoneNumber,
   }) async {
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.setBool(_isAnonymousKey, isAnonymous);
     await prefs.setString(_accessTokenKey, accessToken ?? '');
     await prefs.setString(_phoneNumberKey, phoneNumber ?? '');
   }
 
-  Future<void> clearAuthInfo() async {
+  Future<void> clearUserData() async {
     final prefs = await SharedPreferences.getInstance();
+
     await prefs.remove(_isAnonymousKey);
     await prefs.remove(_accessTokenKey);
     await prefs.remove(_phoneNumberKey);
   }
 
-  Future<UserState> getAuthState() async {
+  Future<UserState> getUserState() async {
     final prefs = await SharedPreferences.getInstance();
+
     bool? isAnonymous = prefs.getBool(_isAnonymousKey);
     String? accessToken = prefs.getString(_accessTokenKey);
     String? phoneNumber = prefs.getString(_phoneNumberKey);

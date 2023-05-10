@@ -22,6 +22,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final UserCubit userCubit = UserCubit();
@@ -31,13 +32,15 @@ class MyApp extends StatelessWidget {
 
     initializeData() async {
       await userCubit.loadStoredState();
-      navigationCubit.loadInitialNavigation();
+
+      Future.delayed(const Duration(seconds: 2))
+          .then((_) => navigationCubit.loadInitialNavigation());
 
       if (userCubit.state.isAuthenticated) {
         try {
-          await moviesCubit.loadMovies();
+          moviesCubit.loadMovies();
         } catch (e) {
-          errorCubit.showError('Failed to load movies.');
+          errorCubit.showError('Failed to load movies');
         }
       }
     }

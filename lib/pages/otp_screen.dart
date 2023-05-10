@@ -3,6 +3,7 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
+import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/cubit/user/user_state.dart';
@@ -26,6 +27,7 @@ class _OtpPageState extends State<OtpPage> {
   Widget build(BuildContext context) {
     var authCubit = BlocProvider.of<UserCubit>(context);
     var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+    var moviesCubit = BlocProvider.of<MoviesCubit>(context);
     var errorCubit = BlocProvider.of<ErrorCubit>(context);
 
     return Scaffold(
@@ -71,6 +73,7 @@ class _OtpPageState extends State<OtpPage> {
                               await authCubit.validateOtp(otp);
 
                               if (authCubit.state is Authenticated) {
+                                moviesCubit.loadMovies();
                                 navigationCubit.startAuthenticated();
                               } else {
                                 errorCubit.showError('Could not validate OTP');

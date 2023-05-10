@@ -14,7 +14,7 @@ class MoviesState {
         _movieSession = movieSession,
         _selectedSeats = selectedSeats;
 
-  // Public getters
+
   Map<int, Movie> get movies => _movies;
   MovieSession? get movieSession => _movieSession;
   Set<Seat>? get selectedSeats => _selectedSeats;

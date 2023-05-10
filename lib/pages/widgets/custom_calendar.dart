@@ -76,12 +76,12 @@ class _CustomCalendarState extends State<CustomCalendar> {
         loading = false;
       });
 
-      // Show SnackBar using ErrorCubit
+      var errorCubit = BlocProvider.of<ErrorCubit>(context);
       if (e is MoviesServiceException) {
-        BlocProvider.of<ErrorCubit>(context).addError(e.message);
+        errorCubit.showError(e.message);
       } else {
-        BlocProvider.of<ErrorCubit>(context)
-            .addError('An unexpected error occurred: $e');
+        errorCubit
+            .showError('An unexpected error occurred: $e');
       }
 
       return [];
@@ -148,24 +148,22 @@ class _CustomCalendarState extends State<CustomCalendar> {
           child: loading
               ? Text('Loading...', style: nunito)
               : Center(
-                  child: Container(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: sessions.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SessionSelectionButton(
-                            sessionTime: DateFormat('HH:mm')
-                                .format(sessions[index].date),
-                            selected: selectedSession != null &&
-                                selectedSession == sessions[index],
-                            onTap: () {
-                              setState(() {
-                                selectedSession = sessions[index];
-                              });
-                            },
-                          );
-                        }),
-                  ),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: sessions.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return SessionSelectionButton(
+                          sessionTime: DateFormat('HH:mm')
+                              .format(sessions[index].date),
+                          selected: selectedSession != null &&
+                              selectedSession == sessions[index],
+                          onTap: () {
+                            setState(() {
+                              selectedSession = sessions[index];
+                            });
+                          },
+                        );
+                      }),
                 ),
         ),
       ),

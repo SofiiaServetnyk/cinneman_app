@@ -2,7 +2,6 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
-import 'package:cinneman/pages/movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -140,6 +139,7 @@ class MovieDetailsPage extends StatelessWidget {
                                     description: movie.screenwriter),
                                 MovieDetailRow(
                                     title: 'Studio', description: movie.studio),
+                                const SizedBox(height: SizedBoxSize.sbs75)
                               ],
                             ),
                           ),

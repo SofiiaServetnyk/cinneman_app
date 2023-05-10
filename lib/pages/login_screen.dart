@@ -77,11 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                             await authCubit.enterPhoneNumber(phoneNumber);
 
                             if (authCubit.state.phoneNumber != null) {
-                              navigationCubit
-                                  .goToPage(RouteConfig(route: AppRoutes.otp));
+                              navigationCubit.openOtpPage();
                             } else {
-                              errorCubit.showError(
-                                  "Could not send OTP");
+                              errorCubit.showError("Could not send OTP");
                             }
                           },
                           child: Text('Send', style: nunito.s18.yellow1))

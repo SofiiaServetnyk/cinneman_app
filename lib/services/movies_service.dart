@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
 class MovieService {
-  final Dio _dio = Dio();
+  final Dio dio = Dio();
   UserCubit authCubit;
   static String apiUrl = dotenv.env['API_URL']!;
 
@@ -15,7 +15,7 @@ class MovieService {
   Future<List<Movie>> getMovies() async {
     try {
       final currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      final response = await _dio.get(
+      final response = await dio.get(
         '$apiUrl/api/movies',
         queryParameters: {
           'date': currentDate,
@@ -42,7 +42,7 @@ class MovieService {
       {required Movie movie, required DateTime date}) async {
     try {
       final formattedDate = DateFormat('yyyy-MM-dd').format(date);
-      final response = await _dio.get(
+      final response = await dio.get(
         '$apiUrl/api/movies/sessions',
         queryParameters: {
           'movieId': movie.id,
@@ -69,7 +69,7 @@ class MovieService {
   Future<MovieSession?> getMovieSessionById(
       {required Movie movie, required int sessionId}) async {
     try {
-      final response = await _dio.get(
+      final response = await dio.get(
         '$apiUrl/api/movies/sessions/$sessionId',
         options: Options(headers: {
           'Authorization': 'Bearer ${authCubit.state.accessToken}',
@@ -91,7 +91,7 @@ class MovieService {
     try {
       List<int> seatIds = seats.map((seat) => seat.id).toList();
 
-      final response = await _dio.post(
+      final response = await dio.post(
         '$apiUrl/api/movies/book',
         data: {
           'seats': seatIds,
@@ -124,7 +124,7 @@ class MovieService {
       // Map the seats to their IDs
       List<int> seatIds = seats.map((seat) => seat.id).toList();
 
-      final response = await _dio.post(
+      final response = await dio.post(
         '$apiUrl/api/movies/buy',
         data: {
           'seats': seatIds,

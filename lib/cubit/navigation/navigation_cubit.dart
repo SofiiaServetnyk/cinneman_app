@@ -26,6 +26,18 @@ class NavigationCubit extends Cubit<NavigationState> {
     goToPage(RouteConfig(route: AppRoutes.moviesListPage));
   }
 
+  void openLoginPage(){
+    push(RouteConfig(route: AppRoutes.login));
+  }
+
+  void openUserPage(){
+    push(RouteConfig(route: AppRoutes.userProfile));
+  }
+
+  void openOtpPage(){
+   push(RouteConfig(route: AppRoutes.otp));
+  }
+
   void openMovieDetailsPage(int id) {
     push(RouteConfig(route: AppRoutes.movieDetailsPage, args: id));
   }
@@ -35,7 +47,7 @@ class NavigationCubit extends Cubit<NavigationState> {
   }
 
   void openPaymentPage() {
-    push(RouteConfig(route: AppRoutes.checkoutPage));
+    push(RouteConfig(route: AppRoutes.paymentPage));
   }
 
   void openUserPageAfterSuccessfulPayment() {
@@ -43,8 +55,8 @@ class NavigationCubit extends Cubit<NavigationState> {
     push(RouteConfig(route: AppRoutes.userProfile));
   }
 
-  void push(RouteConfig routePath) {
-    emit(state.push(routePath));
+  void push(RouteConfig config) {
+    emit(state.push(config));
   }
 
   void pop() {

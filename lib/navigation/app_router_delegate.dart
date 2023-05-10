@@ -77,9 +77,9 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
     bool requiresAuth = [
       AppRoutes.moviesListPage,
       AppRoutes.movieDetailsPage,
-      AppRoutes.checkoutPage,
+      AppRoutes.paymentPage,
       AppRoutes.userProfile,
-      AppRoutes.userTickets,
+
     ].contains(configuration.route);
 
     if (requiresAuth && !isAuthenticated) {

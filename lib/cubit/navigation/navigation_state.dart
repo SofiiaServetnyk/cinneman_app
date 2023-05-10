@@ -6,7 +6,6 @@ class NavigationState {
 
   NavigationState({required List<RouteConfig> stack}) : _stack = stack;
 
-
   bool canPop() {
     return _stack.length > 1;
   }

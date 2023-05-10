@@ -3,7 +3,6 @@ import 'package:cinneman/core/style/images.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
-import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,8 +27,7 @@ class MoviesListPage extends StatelessWidget {
                           Text("Movies menu:", style: nunito.white.s18),
                           GestureDetector(
                             onTap: () {
-                              navigationCubit.push(
-                                  RouteConfig(route: AppRoutes.userProfile));
+                              navigationCubit.openUserPage();
                             },
                             child: Container(
                               decoration: BoxDecoration(

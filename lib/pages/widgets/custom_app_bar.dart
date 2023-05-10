@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   navigationCubit
-                      .push(RouteConfig(route: AppRoutes.userProfile));
+                      .openUserPage();
                 },
                 child: Container(
                   decoration: BoxDecoration(

@@ -1,0 +1,23 @@
+# This is a generated file; do not edit or check into version control.
+path_provider_linux=/Users/sofindersky/.pub-cache/hosted/pub.dev/path_provider_linux-2.1.10/
+path_provider_windows=/Users/sofindersky/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.6/
+shared_preferences=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences-2.1.0/
+shared_preferences_android=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences_android-2.1.4/
+shared_preferences_foundation=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.2.1/
+shared_preferences_linux=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.2.0/
+shared_preferences_web=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences_web-2.1.0/
+shared_preferences_windows=/Users/sofindersky/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.2.0/
+url_launcher=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher-6.1.10/
+url_launcher_android=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_android-6.0.31/
+url_launcher_ios=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_ios-6.1.4/
+url_launcher_linux=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_linux-3.0.5/
+url_launcher_macos=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_macos-3.0.5/
+url_launcher_web=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_web-2.0.16/
+url_launcher_windows=/Users/sofindersky/.pub-cache/hosted/pub.dev/url_launcher_windows-3.0.6/
+video_player=/Users/sofindersky/.pub-cache/hosted/pub.dev/video_player-2.6.1/
+video_player_android=/Users/sofindersky/.pub-cache/hosted/pub.dev/video_player_android-2.4.7/
+video_player_avfoundation=/Users/sofindersky/.pub-cache/hosted/pub.dev/video_player_avfoundation-2.4.5/
+video_player_web=/Users/sofindersky/.pub-cache/hosted/pub.dev/video_player_web-2.0.16/
+wakelock=/Users/sofindersky/.pub-cache/hosted/pub.dev/wakelock-0.6.2/
+wakelock_macos=/Users/sofindersky/.pub-cache/hosted/pub.dev/wakelock_macos-0.4.0/
+wakelock_web=/Users/sofindersky/.pub-cache/hosted/pub.dev/wakelock_web-0.4.0/

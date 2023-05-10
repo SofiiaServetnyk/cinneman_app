@@ -78,6 +78,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var userCubit = BlocProvider.of<UserCubit>(context);
+    var navigationCubit = BlocProvider.of<NavigationCubit>(context);
+    var moviesCubit = BlocProvider.of<MoviesCubit>(context);
+    var errorCubit = BlocProvider.of<ErrorCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: CustomColors.brown1),
@@ -227,30 +232,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           await _handlePayment();
                         } catch (e) {
                           if (e is MoviesServiceException) {
-                            BlocProvider.of<ErrorCubit>(context)
-                                .showError(e.message);
+                            errorCubit.showError(e.message);
 
                             return;
                           } else {
-                            throw e;
+                            rethrow;
                           }
                         }
 
-                        if (BlocProvider.of<MoviesCubit>(context).state
-                            is SuccessfulPaymentMovieState) {
-                          BlocProvider.of<UserCubit>(context)
-                              .loadTickets();
-                          BlocProvider.of<NavigationCubit>(context)
-                              .openUserPageAfterSuccessfulPayment();
+                        if (moviesCubit.state
+                        is SuccessfulPaymentMovieState) {
+                          userCubit.loadTickets();
+                          navigationCubit.openUserPageAfterSuccessfulPayment();
                         } else {
-                          BlocProvider.of<ErrorCubit>(context)
-                              .showError("Could not process payment");
+                          errorCubit.showError("Could not process payment");
                         }
                       },
                       child: Text(
                         'Delicious Payment',
                         style: nunito.white,
-                      ))
+                      )
+                  )
                 ],
               ),
             ),
