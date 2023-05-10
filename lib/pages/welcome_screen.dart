@@ -5,11 +5,13 @@ import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
-import 'package:cinneman/features/authorization/presentation/custom_button.dart';
-import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
+
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets/custom_button.dart';
+import 'widgets/custom_text_button.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

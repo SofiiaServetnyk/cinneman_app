@@ -2,13 +2,15 @@ import 'package:cinneman/core/style/colors.dart';
 import 'package:cinneman/core/style/paddings_and_consts.dart';
 import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/movies/movies_cubit.dart';
-import 'package:cinneman/features/authorization/presentation/custom_button.dart';
-import 'package:cinneman/features/home/presentation/widgets/custom_calendar.dart';
-import 'package:cinneman/features/home/presentation/widgets/movie_detail_row.dart';
 import 'package:cinneman/pages/movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'widgets/custom_app_bar.dart';
+import 'widgets/custom_button.dart';
+import 'widgets/custom_calendar.dart';
+import 'widgets/movie_detail_row.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   int movieId;
@@ -91,7 +93,7 @@ class MovieDetailsPage extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(
                                                 CustomBorderRadius.br)),
                                         child: Text(
-                                            movie.duration.toString() + ' min',
+                                            '${movie.duration} min',
                                             style: nunito.white)),
                                   ],
                                 )
@@ -99,7 +101,7 @@ class MovieDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        MyAppBar(color: Colors.transparent),
+                        CustomAppBar(color: Colors.transparent),
                       ],
                     ),
                   ),

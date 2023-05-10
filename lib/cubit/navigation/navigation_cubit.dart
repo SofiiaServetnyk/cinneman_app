@@ -40,7 +40,7 @@ class NavigationCubit extends Cubit<NavigationState> {
     push(RouteConfig(route: AppRoutes.checkoutPage));
   }
 
-  void openUserPageAfterSuccesfulPayment() {
+  void openUserPageAfterSuccessfulPayment() {
     state.clearAndPush(RouteConfig(route: AppRoutes.moviesListPage));
     push(RouteConfig(route: AppRoutes.userProfile));
   }
@@ -57,8 +57,4 @@ class NavigationCubit extends Cubit<NavigationState> {
     emit(state.clearAndPush(routePath));
   }
 
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 }

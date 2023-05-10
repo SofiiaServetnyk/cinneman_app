@@ -15,7 +15,7 @@ class AppRouteInformationParser extends RouteInformationParser<RouteConfig> {
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location ?? '');
 
-    // Handle anonymous pages
+
     if (!isAuthenticated) {
       switch (uri.path) {
         case '/welcome':
@@ -27,14 +27,14 @@ class AppRouteInformationParser extends RouteInformationParser<RouteConfig> {
       }
     }
 
-    // Handle authenticated pages
+
     switch (uri.path) {
       case '/movies':
         return RouteConfig(route: AppRoutes.moviesListPage);
       case '/movie-details':
-        // Assuming movieId is a query parameter
+
         if (uri.queryParameters.containsKey('movieId')) {
-          // Pass the movieId as an additional property to RoutePath if needed
+
           return RouteConfig(
               route: AppRoutes.movieDetailsPage,
               args: uri.queryParameters['movieId']);
@@ -52,30 +52,28 @@ class AppRouteInformationParser extends RouteInformationParser<RouteConfig> {
   }
 
   @override
-  RouteInformation? restoreRouteInformation(RouteConfig config) {
-    switch (config.route) {
-      // case AppRoutes.splash:
-      //   return RouteInformation(location: '/');
+  RouteInformation? restoreRouteInformation(RouteConfig configuration) {
+    switch (configuration.route) {
+
       case AppRoutes.welcomeScreen:
-        return RouteInformation(location: '/welcome');
+        return const RouteInformation(location: '/welcome');
       case AppRoutes.login:
-        return RouteInformation(location: '/login');
+        return const RouteInformation(location: '/login');
       case AppRoutes.otp:
-        return RouteInformation(location: '/login/otp');
+        return const RouteInformation(location: '/login/otp');
       case AppRoutes.moviesListPage:
-        return RouteInformation(location: '/movies');
+        return const RouteInformation(location: '/movies');
       case AppRoutes.movieDetailsPage:
-        // Assuming movieId is a query parameter
-        // Use the movieId from the RoutePath to build the location
-        return RouteInformation(location: '/movie-details?movieId=example');
+
+        return const RouteInformation(location: '/movie-details?movieId=example');
       case AppRoutes.checkoutPage:
-        return RouteInformation(location: '/checkout');
+        return const RouteInformation(location: '/checkout');
       case AppRoutes.userProfile:
-        return RouteInformation(location: '/profile');
+        return const RouteInformation(location: '/profile');
       case AppRoutes.userTickets:
-        return RouteInformation(location: '/tickets');
+        return const RouteInformation(location: '/tickets');
       default:
-        return RouteInformation(location: '/');
+        return const RouteInformation(location: '/');
     }
   }
 }

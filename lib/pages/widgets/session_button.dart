@@ -19,7 +19,6 @@ class SessionSelectionButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.all(10),
-        // height: 100,        padding: Paddings.all10,
         width: ButtonSize.sessionMinWidth,
         decoration: BoxDecoration(
             color: selected ? CustomColors.brown1 : CustomColors.yellow17,

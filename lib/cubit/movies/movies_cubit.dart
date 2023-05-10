@@ -3,7 +3,7 @@ import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/data/models/movie.dart';
 import 'package:cinneman/data/models/movie_session_models.dart';
 import 'package:cinneman/services/movies_service.dart';
-import 'package:meta/meta.dart';
+
 
 part 'movies_state.dart';
 
@@ -12,8 +12,8 @@ class MoviesCubit extends Cubit<MoviesState> {
   final MovieService movieService;
 
   MoviesCubit(this.userCubit)
-      : this.movieService = MovieService(userCubit),
-        super(MoviesState(movies: {}));
+      : movieService = MovieService(userCubit),
+        super(const MoviesState(movies: {}));
 
   Future<void> loadMovies() async {
     var moviesList = await movieService.getMovies();

@@ -6,10 +6,11 @@ import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/cubit/user/user_state.dart';
-import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
-import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets/custom_text_button.dart';
+import 'widgets/custom_text_field.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);

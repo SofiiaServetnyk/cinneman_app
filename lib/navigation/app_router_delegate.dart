@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<RouteConfig> {
+  @override
   GlobalKey<NavigatorState> navigatorKey;
 
   final UserCubit _authCubit;
@@ -41,7 +42,6 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
         .map((r) => _pageGenerator.createPage(r))
         .toList();
 
-    // pages.add(MaterialPage(child: PaymentScreen()));
 
     return BlocListener<ErrorCubit, String?>(
       bloc: _errorCubit,
@@ -49,7 +49,7 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
         if (error != null) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(error),
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ));
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -72,20 +72,20 @@ class CinnemanRouterDelegate extends RouterDelegate<RouteConfig>
   }
 
   @override
-  Future<void> setNewRoutePath(RouteConfig config) async {
-    // Check if the requested page key requires authentication
+  Future<void> setNewRoutePath(RouteConfig configuration) async {
+
     bool requiresAuth = [
       AppRoutes.moviesListPage,
       AppRoutes.movieDetailsPage,
       AppRoutes.checkoutPage,
       AppRoutes.userProfile,
       AppRoutes.userTickets,
-    ].contains(config.route);
+    ].contains(configuration.route);
 
     if (requiresAuth && !isAuthenticated) {
       _navigationCubit.goToPage(RouteConfig(route: AppRoutes.login));
     } else {
-      _navigationCubit.goToPage(config);
+      _navigationCubit.goToPage(configuration);
     }
   }
 }

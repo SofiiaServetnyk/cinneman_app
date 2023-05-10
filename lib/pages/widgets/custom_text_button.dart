@@ -1,4 +1,4 @@
-import 'package:cinneman/core/style/customtextbutton_style.dart';
+import 'package:cinneman/core/style/custom_text_button_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextButton extends TextButton {

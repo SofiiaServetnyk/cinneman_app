@@ -6,14 +6,16 @@ import 'package:cinneman/cubit/movies/movies_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/data/models/movie.dart';
 import 'package:cinneman/data/models/movie_session_models.dart';
-import 'package:cinneman/features/authorization/presentation/custom_button.dart';
-import 'package:cinneman/features/home/presentation/widgets/session_button.dart';
+
+import 'package:cinneman/pages/widgets/custom_button.dart';
 import 'package:cinneman/services/movies_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'session_button.dart';
 
 class CustomCalendar extends StatefulWidget {
   Movie movie;
@@ -22,8 +24,8 @@ class CustomCalendar extends StatefulWidget {
 
   CustomCalendar(
       {Key? key, required this.movie, DateTime? firstDay, DateTime? lastDay})
-      : this.firstDay = firstDay ?? DateTime.now(),
-        this.lastDay = lastDay ??
+      : firstDay = firstDay ?? DateTime.now(),
+        lastDay = lastDay ??
             DateTime(DateTime.now().year, DateTime.now().month + 3, 0,
                 DateTime.now().day),
         super(key: key);
@@ -134,7 +136,7 @@ class _CustomCalendarState extends State<CustomCalendar> {
       const SizedBox(height: SizedBoxSize.sbs10),
       Container(
           child: Text(
-        "Sweet Showtimes:".toUpperCase(),
+        "Sweet Showtime:".toUpperCase(),
         style: TextStyle(
             fontFamily: 'Morganite', fontSize: 28, color: CustomColors.brown3),
       )),

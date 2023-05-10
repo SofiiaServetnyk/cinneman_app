@@ -6,12 +6,13 @@ import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
 import 'package:cinneman/cubit/user/user_state.dart';
 import 'package:cinneman/data/models/ticket.dart';
-import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
-import 'package:cinneman/pages/seat_selection_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+
+
+import 'widgets/custom_text_button.dart';
+import 'widgets/ticket_container.dart';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class _UserScreenState extends State<UserScreen> {
               ..sort((a, b) => a.date.compareTo(b.date))
               ..where((ticket) {
                 final ticketDate = ticket.date;
-                final twoHoursAgo = DateTime.now().subtract(Duration(hours: 2));
+                final twoHoursAgo = DateTime.now().subtract(const Duration(hours: 2));
 
                 return ticketDate.isAfter(twoHoursAgo);
               }).toList();
@@ -72,6 +73,7 @@ class _UserScreenState extends State<UserScreen> {
                       state is Authenticated ? state.phoneNumber! : 'Guest',
                       style: nunito),
                 ),
+
                 sortedTickets.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
@@ -87,9 +89,10 @@ class _UserScreenState extends State<UserScreen> {
                               title: sortedTickets[index].name,
                             ),
                           ),
+
                         ),
                       )
-                    : Text('You have no tickets'),
+                    : const Text('You have no tickets'),
                 CustomTextButton(
                     onPressed: () {
                       BlocProvider.of<UserCubit>(context).logoutUser();
@@ -106,72 +109,4 @@ class _UserScreenState extends State<UserScreen> {
   }
 }
 
-class TicketContainer extends StatelessWidget {
-  int ticketId;
-  String title;
 
-  DateTime date;
-  String image;
-
-  TicketContainer(
-      {Key? key,
-      required this.ticketId,
-      required this.date,
-      required this.image,
-      required this.title})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var qrContent = "movie/$ticketId";
-
-    return Container(
-      width: 350,
-      decoration: BoxDecoration(
-          color: CustomColors.grey,
-          borderRadius: BorderRadius.circular(CustomBorderRadius.br)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            children: [
-              MovieBanner(
-                title: title,
-                date: DateFormat("d MMMM, HH:mm").format(date),
-                imageSrc: image,
-              )
-            ],
-          ),
-          Padding(
-            padding: Paddings.all15,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: Paddings.all15,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: QrImage(
-                          data: qrContent,
-                          version: QrVersions.auto,
-                          size: 225.0,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}

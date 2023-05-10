@@ -1,4 +1,4 @@
-import 'package:cinneman/core/style/custombutton_style.dart';
+import 'package:cinneman/core/style/custom_button_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends ElevatedButton {

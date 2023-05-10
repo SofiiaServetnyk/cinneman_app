@@ -1,6 +1,6 @@
 part of 'movies_cubit.dart';
 
-@immutable
+
 class MoviesState {
   final Map<int, Movie> _movies;
   final MovieSession? _movieSession;

@@ -37,44 +37,44 @@ class PageGenerator {
   MaterialPage createPage(RouteConfig config) {
     switch (config.route) {
       case AppRoutes.welcomeScreen:
-        return MaterialPage(
+        return const MaterialPage(
             child: WelcomePage(), key: ValueKey(AppRoutes.welcomeScreen));
 
       case AppRoutes.login:
-        return MaterialPage(child: LoginPage(), key: ValueKey(AppRoutes.login));
+        return const MaterialPage(child: LoginPage(), key: ValueKey(AppRoutes.login));
 
       case AppRoutes.otp:
-        return MaterialPage(child: OtpPage(), key: ValueKey(AppRoutes.otp));
+        return const MaterialPage(child: OtpPage(), key: ValueKey(AppRoutes.otp));
 
       case AppRoutes.moviesListPage:
         return MaterialPage(
-            child: MoviesListPage(), key: ValueKey(AppRoutes.moviesListPage));
+            child: MoviesListPage(), key: const ValueKey(AppRoutes.moviesListPage));
 
       case AppRoutes.movieDetailsPage:
         var movieId = config.args as int;
 
         return MaterialPage(
             child: MovieDetailsPage(movieId: movieId),
-            key: ValueKey(AppRoutes.movieDetailsPage));
+            key: const ValueKey(AppRoutes.movieDetailsPage));
 
       case AppRoutes.seatSelectPage:
         var session = config.args as MovieSession;
 
         return MaterialPage(
             child: SeatSelectionPage(),
-            key: ValueKey(AppRoutes.seatSelectPage));
+            key: const ValueKey(AppRoutes.seatSelectPage));
 
       case AppRoutes.checkoutPage:
-        return MaterialPage(
+        return const MaterialPage(
             child: PaymentScreen(), key: ValueKey(AppRoutes.checkoutPage));
 
       case AppRoutes.userProfile:
-        return MaterialPage(
+        return const MaterialPage(
             child: UserScreen(), key: ValueKey(AppRoutes.userProfile));
 
       case AppRoutes.splash:
       default:
-        return MaterialPage(
+        return const MaterialPage(
             child: SplashScreen(), key: ValueKey(AppRoutes.splash));
     }
   }

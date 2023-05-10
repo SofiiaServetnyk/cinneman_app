@@ -5,11 +5,12 @@ import 'package:cinneman/core/style/text_style.dart';
 import 'package:cinneman/cubit/error_cubit.dart';
 import 'package:cinneman/cubit/navigation/navigation_cubit.dart';
 import 'package:cinneman/cubit/user/user_cubit.dart';
-import 'package:cinneman/features/authorization/presentation/customtext_button.dart';
-import 'package:cinneman/features/authorization/presentation/widgets/custom_textfield.dart';
 import 'package:cinneman/navigation/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets/custom_text_field.dart';
+import 'widgets/custom_text_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                   .goToPage(RouteConfig(route: AppRoutes.otp));
                             } else {
                               errorCubit.showError(
-                                  "Could not send OTP. Please check phone number or your internet connection.");
+                                  "Could not send OTP");
                             }
                           },
                           child: Text('Send', style: nunito.s18.yellow1))
