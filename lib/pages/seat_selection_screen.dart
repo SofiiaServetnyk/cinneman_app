@@ -149,8 +149,7 @@ class SeatSelectionPage extends StatelessWidget {
                                       Seat seat =
                                           state.selectedSeats!.elementAt(index);
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4.0),
+                                        padding: Paddings.all5,
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

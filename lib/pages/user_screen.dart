@@ -25,12 +25,10 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(30.0),
-        child: AppBar(
-          elevation: 0.0,
-          backgroundColor: CustomColors.white,
-        ),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: CustomColors.brown1),
+        elevation: 0.0,
+        backgroundColor: CustomColors.white,
       ),
       backgroundColor: CustomColors.white,
       body: SafeArea(
@@ -54,7 +52,7 @@ class _UserScreenState extends State<UserScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.black,
+                          color: CustomColors.brown1,
                           width: 2.0,
                         ),
                       ),
@@ -71,7 +69,7 @@ class _UserScreenState extends State<UserScreen> {
                   padding: Paddings.all10,
                   child: Text(
                       state is Authenticated ? state.phoneNumber! : 'Guest',
-                      style: nunito),
+                      style: nunito.brown1.s18),
                 ),
 
                 sortedTickets.isNotEmpty
@@ -92,7 +90,7 @@ class _UserScreenState extends State<UserScreen> {
 
                         ),
                       )
-                    : const Text('You have no tickets'),
+                    :  Text('You have no tickets', style: nunito,),
                 CustomTextButton(
                     onPressed: () {
                       BlocProvider.of<UserCubit>(context).logoutUser();
